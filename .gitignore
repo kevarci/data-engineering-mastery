@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Databases & Heavy Data Files
+*.db
+*.sqlite
+*.sqlite3
+tuning_lab.db
+
+# Heavy datasets (raw & transformed local data)
+sprint_01_aws_lakehouse/data/raw/
+*.parquet
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# OS generated files
+.DS_Store
+Thumbs.db
