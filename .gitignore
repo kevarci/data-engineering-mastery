@@ -21,3 +21,8 @@ ENV/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Internal Coaching, Study Schedules & Gap Analysis (Private)
+ANALISIS_BRECHAS.md
+PLAN_ESTUDIO.md
+.coaching/

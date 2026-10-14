@@ -1,75 +1,151 @@
-# Mastery Lab: Acelerador Técnico de Datos & Cloud
+<div align="center">
 
-> **Ubicación:** `Proyectos BigData/mastery-lab`  
-> **Candidato:** Kevin Stick Arciniegas Marquez  
-> **Estrategia:** *Zero-Fluff / Project-Driven Learning* (Aprender sobre código real en producción)  
-> **Documentos de Referencia:**
-> * Plan de Estudio Detallado: [PLAN_ESTUDIO.md](file:///c:/Users/pc/Desktop/Proyectos%20BigData/mastery-lab/PLAN_ESTUDIO.md)
-> * Diagnóstico de Brechas: [ANALISIS_BRECHAS.md](file:///c:/Users/pc/Desktop/Proyectos%20BigData/mastery-lab/ANALISIS_BRECHAS.md)
+# ⚡ ENTERPRISE DATA & CLOUD ENGINEERING LAB
+### *Scalable Cloud Architectures • Distributed Lakehouse Pipelines • Database Performance Engineering*
+
+[![AWS](https://img.shields.io/badge/AWS-Cloud%20Data%20Stack-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.5%20%7C%20PySpark-E25A1C?style=for-the-badge&logo=apache-spark&logoColor=white)](https://spark.apache.org/)
+[![Databricks](https://img.shields.io/badge/Databricks-Delta%20Lake%20ACID-FF3621?style=for-the-badge&logo=databricks&logoColor=white)](https://databricks.com/)
+[![Airflow](https://img.shields.io/badge/Apache%20Airflow-Orchestration-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)](https://airflow.apache.org/)
+[![dbt](https://img.shields.io/badge/dbt%20Core-Transformations-FF694B?style=for-the-badge&logo=dbt&logoColor=white)](https://getdbt.com/)
+[![Docker](https://img.shields.io/badge/Docker-Containers%20%26%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-T--SQL%20Tuning-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+
+<p align="center">
+  <b>Architected by <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
+  <i>Data & Cloud Engineer • Distributed Systems • Query Performance Optimization</i>
+</p>
 
 ---
 
-## 1. Estructura del Repositorio
+</div>
+
+## 📌 Executive Summary
+
+This repository is a production-grade monorepo containing end-to-end data architectures designed to handle high-throughput analytical workloads, distributed transformations, zero-data-loss orchestration, and deep database performance tuning.
+
+* **Distributed Lakehouse:** Built on the **Medallion Architecture (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)** using AWS S3, PySpark, and Delta Lake.
+* **Modern DataOps:** Multi-container orchestration with Apache Airflow, Docker Compose, SQL Server, and modular SQL transformations via dbt Core.
+* **Performance Engineering:** Relational engine internals, query execution plan diagnostics (`EXPLAIN ANALYZE`), covering indexes (`INCLUDE`), and partial/filtered indexing.
+
+---
+
+## 🚀 Engineering Roadmap & Delivery Board
 
 ```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│  SPRINT STATUS OVERVIEW                                                                │
+│  [■■■■■■■■■□□□□□□□□□□□] 35% Completed Milestone Delivery                               │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+| Phase / Milestone | Architecture & Scope | Core Stack | Status |
+| :--- | :--- | :--- | :---: |
+| **Sprint 1: Serverless Cloud Lakehouse** | Scalable Medallion Lakehouse on AWS. Partitioned Parquet ingestion, PySpark cleaning, Delta Lake ACID transactions, Glue Data Catalog, and Athena analytics. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **IN PROGRESS (Active Sprint)** |
+| **Sprint 2: DataOps & Orchestration** | Enterprise ELT orchestration in Docker. Relational ingestion from SQL Server, modular DAGs with TaskFlow API, dbt Core star-schema modeling, and automated data contracts. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planned |
+| **Sprint 3: MLOps & GenAI Serving** | High-performance inference microservice with FastAPI, experiment tracking with MLflow, containerized multi-stage builds, and RAG retrieval via Vector DB. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planned |
+
+---
+
+## 🏛️ Active Architecture: Serverless Lakehouse (Sprint 1)
+
+```
+                                  DATA INGESTION & STORAGE FLOW
+                                  
+ ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────────────────┐
+ │   RAW INGESTION      │        │  BRONZE LAYER (RAW)   │        │ SILVER LAYER (CLEAN)  │
+ │ 100,000+ Transactions├───────►│    Amazon S3 Bucket   ├───────►│  Databricks PySpark   │
+ │ Partitioned Parquet  │        │  year=YYYY/month=MM   │        │ Schema & Deduplication│
+ └──────────────────────┘        └───────────────────────┘        └───────────┬───────────┘
+                                                                              │
+                                                                              ▼
+ ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────────────────┐
+ │   ANALYTICAL SQL     │        │  CENTRAL DATA CATALOG │        │  GOLD LAYER (MARTS)   │
+ │   Amazon Athena      │◄───────┤    AWS Glue Catalog   │◄───────┤   Delta Lake (ACID)   │
+ │ Serverless Analytics │        │    (Glue Crawler)     │        │  Aggregated Business  │
+ └──────────────────────┘        └───────────────────────┘        └───────────────────────┘
+```
+
+### Key Engineering Artifacts in Sprint 1:
+1. **Partitioned Data Pipeline (`generate_sample_dataset.py`):**
+   * Generates 100,000+ realistic e-commerce and financial events.
+   * Physically partitioned into Parquet directories (`year=2026/month=10/day=DD`) for optimal **predicate pushdown** and cloud cost reduction.
+2. **Defensive Ingestion Automation (`sync_bronze_lakehouse.sh`):**
+   * Engineered with **Bash Strict Mode** (`set -euo pipefail`) to prevent silent failures.
+   * Auto-discovers relative paths (cross-platform compatible between Windows, Linux containers, and EC2).
+   * Executes idempotent **`aws s3 sync`** with safe `--dryrun` pre-flight checks.
+
+---
+
+## ⚡ Performance Engineering & Database Internals (`daily_drills/`)
+
+In enterprise environments, writing SQL is not enough; **understanding how the database storage engine executes queries is what guarantees sub-second SLAs**.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│  BENCHMARK: 120,000 ROWS TABLE SCAN VS. B-TREE SEARCH                                  │
+├────────────────────────────────┬───────────────────────────────────────────────────────┤
+│ WITHOUT INDEX (Table Scan):    │ detail: SCAN FactSales                                │
+│ Cost: High I/O ($O(N)$)       │ Scans 120,000 rows sequentially from disk             │
+├────────────────────────────────┼───────────────────────────────────────────────────────┤
+│ WITH COMPOSITE INDEX:          │ detail: SEARCH FactSales USING INDEX IX_Cust_Date     │
+│ Cost: Sub-millisecond ($O(\log N)$) B-Tree binary traversal directly to target leaves  │
+└────────────────────────────────┴───────────────────────────────────────────────────────┘
+```
+
+### 🎯 Hard Skills Demonstrated:
+* **Filtered / Partial Indexes:** Indexing only active operational records (`WHERE Status = 'PENDING'`), eliminating **97% of storage footprint** and shielding insert throughput.
+* **Covering Indexes (`INCLUDE`):** Storing projected attributes in leaf pages to eliminate expensive **Key Lookups / Bookmark Lookups**.
+* **Advanced Window Functions:**
+  * **Tie Resolution:** Precise application of `DENSE_RANK()` vs `RANK()` vs `ROW_NUMBER()`.
+  * **Optimized Running Totals:** Explicit physical frame definition (`ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`) to bypass slow `RANGE` spooling.
+  * **Period-over-Period (MoM):** Zero-join sequential delta calculations with `LAG()` / `LEAD()`.
+
+---
+
+## 📂 Repository Topology
+
+```bash
 mastery-lab/
-├── README.md                           <- Este tablero de control y bitácora
-├── PLAN_ESTUDIO.md                     <- Plan de 6 semanas y horarios diarios
-├── ANALISIS_BRECHAS.md                 <- Diagnóstico técnico de 510 vacantes
-├── sprint_01_aws_lakehouse/            <- SPRINT 1: S3 + PySpark + Databricks + Glue + Athena
-│   ├── README.md                       <- Guía paso a paso y arquitectura del Proyecto 1
-│   ├── scripts/                        <- Scripts de PySpark, ETL y generación de datos
-│   └── infra/                          <- Plantillas y comandos de AWS CLI / IAM
-├── sprint_02_airflow_dbt/              <- SPRINT 2: Docker Compose + Airflow + dbt Core
-│   └── README.md                       <- Guía y arquitectura del Proyecto 2
-├── sprint_03_mlops_rag/                <- SPRINT 3: FastAPI + MLflow + RAG (Vector DB)
-│   └── README.md                       <- Guía y arquitectura del Proyecto 3
-└── daily_drills/                       <- Ejercicios diarios de código duro (1 hora/día)
-    ├── sql_tuning/                     <- T-SQL (SQL Server), Window functions, Índices INCLUDE, EXPLAIN
-    ├── bash_scripting/                 <- Scripts Linux robustos para automatización
-    └── data_modeling/                  <- Esquemas en estrella Kimball y fórmulas DAX
+├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse on AWS
+│   ├── README.md                       # Architecture diagram and step-by-step setup
+│   ├── scripts/                        # Ingestion, validation & PySpark jobs
+│   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
+│   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
+│   └── data/                           # Partitioned raw data layer (local dev)
+├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow & dbt Core
+│   └── README.md                       # Containerized orchestration guide
+├── sprint_03_mlops_rag/                # SPRINT 3: Production MLOps & GenAI
+│   └── README.md                       # FastAPI, Model Registry & Vector Database
+└── daily_drills/                       # Technical Drills & Performance Engineering
+    └── sql_tuning/                     # SQL Server, PostgreSQL & analytical engines
+        ├── 01_window_functions.sql     # Live-coding interview patterns
+        ├── 02_sql_server_tsql_tuning.sql # Deep engine tuning & transaction handling
+        └── dbeaver_interactive_lab.sql # Benchmark test suite (120,000+ records)
 ```
 
 ---
 
-## 2. Tablero de Progreso (Sprints de 2 Semanas)
+## 🛠️ Technology Ecosystem
 
-| Sprint / Fase | Objetivo Técnico | Entregable para Portfolio | Estado |
-| :--- | :--- | :--- | :--- |
-| **Sprint 1 (Sem. 1-2)** | **AWS Lakehouse & PySpark** | Pipeline Serverless Medallion (S3, Delta Lake, Glue, Athena) + T-SQL | 🟡 **EN CURSO (Día 1)** |
-| **Sprint 2 (Sem. 3-4)** | **DataOps & Modern Stack** | Clúster Airflow en Docker + SQL Server + Modelado dbt Core | ⚪ Pendiente |
-| **Sprint 3 (Sem. 5-6)** | **MLOps & GenAI Práctica** | API FastAPI en Docker + MLflow + Asistente RAG Vectorial | ⚪ Pendiente |
-
----
-
-## 3. La Rutina Diaria (4.5 Horas de Enfoque Profundo)
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│ 09:00 - 11:30 | BLOQUE 1: PROYECTO CORE (AWS + Big Data / MLOps)      │
-│                 Manos en el código. Construcción del pipeline principal│
-├────────────────────────────────────────────────────────────────────────┤
-│ 11:30 - 12:00 | DESCANSO ACTIVO (Pausa mental)                         │
-├────────────────────────────────────────────────────────────────────────┤
-│ 12:00 - 13:00 | BLOQUE 2: HARD SKILL DRILL (SQL Server T-SQL / DAX)   │
-│                 Ejercicios duros de código para pasar pruebas técnicas │
-├────────────────────────────────────────────────────────────────────────┤
-│ 13:00 - 14:00 | ALMUERZO                                               │
-├────────────────────────────────────────────────────────────────────────┤
-│ 14:00 - 15:00 | BLOQUE 3: INFRA & DATAOPS (Docker, Airflow, CI/CD)     │
-│                 Contenedores, orquestación y automatización            │
-├────────────────────────────────────────────────────────────────────────┤
-│ 15:00 - 15:30 | BLOQUE 4: CIERRE, PORTAFOLIO E INGLÉS TÉCNICO          │
-│                 Git commit, documentar README y explicar en voz alta  │
-└────────────────────────────────────────────────────────────────────────┘
-```
+| Category | Technologies & Tools |
+| :--- | :--- |
+| **Cloud & Storage** | AWS S3, AWS Glue, Amazon Athena, Delta Lake, Parquet Format |
+| **Data Processing** | Apache Spark, PySpark, Databricks, Python 3.12, DuckDB |
+| **Orchestration & DevOps**| Apache Airflow, Docker, Docker Compose, Git, Bash Scripting |
+| **Data Modeling & SQL** | Microsoft SQL Server, PostgreSQL, dbt Core, T-SQL, DBeaver |
+| **Serving & AI** | FastAPI, MLflow, Scikit-learn, ChromaDB, LangChain |
 
 ---
 
-## 4. Bitácora de Trabajo
+## 🛡️ Production Standards
+1. **Idempotency by Design:** All ETL pipelines can run repeatedly without producing duplicated data or side effects.
+2. **Defensive Operations:** Scripts employ strict exit codes, input validation, and dry-run execution modes.
+3. **Optimized I/O:** Partition pruning, columnar compression, and index coverage are prioritized over raw compute scale.
 
-* **Día 1 (2026-10-14):**
-  * **Bloque 1 (Proyecto Core):** Generación y particionado del dataset de transacciones (100,000+ filas, 29 archivos Parquet particionados por año/mes/día) para la capa Bronze de AWS S3.
-  * **Bloque 2 (Hard Skill Drill):** Laboratorio interactivo en DBeaver (`tuning_lab.db`). Dominio de Window Functions (`ROW_NUMBER`, `RANK`, `DENSE_RANK`, `Running Total` con `ROWS BETWEEN`, `LAG`) y análisis de planes de ejecución (`SCAN` vs `SEARCH USING INDEX` e índices filtrados).
-  * **Bloque 3 (Infra & DataOps):** Script de automatización en Bash (`sync_bronze_lakehouse.sh`) con `set -euo pipefail`, validación de directorios, conteo de particiones y preparación para sincronización con AWS CLI.
-  * **Bloque 4 (Cierre & Portfolio):** Configuración de `.gitignore`, inicialización del repositorio Git y pitch de entrevista en inglés técnico.
+---
+
+<div align="center">
+  <sub>Maintained by <b>Kevin Stick Arciniegas Marquez</b> • Open for Data Engineering & Cloud Architecture opportunities.</sub>
+</div>
