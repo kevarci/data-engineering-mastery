@@ -1,151 +1,161 @@
 <div align="center">
 
-# ⚡ ENTERPRISE DATA & CLOUD ENGINEERING LAB
-### *Scalable Cloud Architectures • Distributed Lakehouse Pipelines • Database Performance Engineering*
+# ⚡ LABORATORIO ENTERPRISE DE DATOS & CLOUD
+### *Arquitecturas Cloud Escalables • Pipelines Distribuidos Lakehouse • Optimización y Tuning de Bases de Datos*
+
+<p align="center">
+  <a href="README.md">
+    <img src="https://img.shields.io/badge/Versi%C3%B3n_en_Espa%C3%B1ol-🇪🇸-2ea44f?style=for-the-badge&logoColor=white" alt="Versión en Español" height="34" />
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="README_EN.md">
+    <img src="https://img.shields.io/badge/English_Version-🇬🇧-0969da?style=for-the-badge&logoColor=white" alt="English Version" height="34" />
+  </a>
+</p>
 
 [![AWS](https://img.shields.io/badge/AWS-Cloud%20Data%20Stack-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
 [![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.5%20%7C%20PySpark-E25A1C?style=for-the-badge&logo=apache-spark&logoColor=white)](https://spark.apache.org/)
 [![Databricks](https://img.shields.io/badge/Databricks-Delta%20Lake%20ACID-FF3621?style=for-the-badge&logo=databricks&logoColor=white)](https://databricks.com/)
-[![Airflow](https://img.shields.io/badge/Apache%20Airflow-Orchestration-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)](https://airflow.apache.org/)
-[![dbt](https://img.shields.io/badge/dbt%20Core-Transformations-FF694B?style=for-the-badge&logo=dbt&logoColor=white)](https://getdbt.com/)
-[![Docker](https://img.shields.io/badge/Docker-Containers%20%26%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Airflow](https://img.shields.io/badge/Apache%20Airflow-Orquestaci%C3%B3n-017CEE?style=for-the-badge&logo=apache-airflow&logoColor=white)](https://airflow.apache.org/)
+[![dbt](https://img.shields.io/badge/dbt%20Core-Transformaciones-FF694B?style=for-the-badge&logo=dbt&logoColor=white)](https://getdbt.com/)
+[![Docker](https://img.shields.io/badge/Docker-Contenedores%20%26%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-T--SQL%20Tuning-CC292B?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 <p align="center">
-  <b>Architected by <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
-  <i>Data & Cloud Engineer • Distributed Systems • Query Performance Optimization</i>
+  <b>Diseñado por <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
+  <i>Ingeniero de Datos & Cloud • Sistemas Distribuidos • Optimización de Consultas & Rendimiento</i>
 </p>
 
 ---
 
 </div>
 
-## 📌 Executive Summary
+## 📌 Resumen Ejecutivo
 
-This repository is a production-grade monorepo containing end-to-end data architectures designed to handle high-throughput analytical workloads, distributed transformations, zero-data-loss orchestration, and deep database performance tuning.
+Este repositorio es un monorepo de nivel productivo que contiene arquitecturas de datos de punta a punta diseñadas para soportar cargas analíticas masivas, transformaciones distribuidas, orquestación tolerante a fallos y optimización profunda de motores relacionales.
 
-* **Distributed Lakehouse:** Built on the **Medallion Architecture (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)** using AWS S3, PySpark, and Delta Lake.
-* **Modern DataOps:** Multi-container orchestration with Apache Airflow, Docker Compose, SQL Server, and modular SQL transformations via dbt Core.
-* **Performance Engineering:** Relational engine internals, query execution plan diagnostics (`EXPLAIN ANALYZE`), covering indexes (`INCLUDE`), and partial/filtered indexing.
+* **Lakehouse Distribuido:** Construido sobre la **Arquitectura Medallion (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)** utilizando AWS S3, PySpark y Delta Lake.
+* **DataOps Moderno:** Orquestación multicontenedor con Apache Airflow, Docker Compose, SQL Server y modelado dimensional modular con dbt Core.
+* **Ingeniería de Rendimiento (SQL Tuning):** Comprensión profunda de motores relacionales, diagnóstico con planes de ejecución (`EXPLAIN QUERY PLAN`), índices cubrientes (`INCLUDE`) e índices filtrados/parciales.
 
 ---
 
-## 🚀 Engineering Roadmap & Delivery Board
+## 🚀 Tablero de Entregas & Hoja de Ruta
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  SPRINT STATUS OVERVIEW                                                                │
-│  [■■■■■■■■■□□□□□□□□□□□] 35% Completed Milestone Delivery                               │
+│  ESTADO GENERAL DEL PROYECTO                                                           │
+│  [■■■■■■■■■□□□□□□□□□□□] 35% Entregables Completados                                   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-| Phase / Milestone | Architecture & Scope | Core Stack | Status |
+| Fase / Hito | Arquitectura & Alcance | Stack Principal | Estado |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Serverless Cloud Lakehouse** | Scalable Medallion Lakehouse on AWS. Partitioned Parquet ingestion, PySpark cleaning, Delta Lake ACID transactions, Glue Data Catalog, and Athena analytics. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **IN PROGRESS (Active Sprint)** |
-| **Sprint 2: DataOps & Orchestration** | Enterprise ELT orchestration in Docker. Relational ingestion from SQL Server, modular DAGs with TaskFlow API, dbt Core star-schema modeling, and automated data contracts. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planned |
-| **Sprint 3: MLOps & GenAI Serving** | High-performance inference microservice with FastAPI, experiment tracking with MLflow, containerized multi-stage builds, and RAG retrieval via Vector DB. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planned |
+| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (Sprint Activo)** |
+| **Sprint 2: DataOps & Orquestación** | Pipeline ELT corporativo en Docker. Ingesta relacional desde SQL Server, DAGs modulares con TaskFlow API, modelado dimensional Kimball con dbt Core y contratos de datos automáticos. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planificado |
+| **Sprint 3: MLOps & Servicio de GenAI** | Microservicio de inferencia de alto rendimiento con FastAPI, tracking de experimentos en MLflow, imágenes Docker multi-stage y recuperación semántica RAG con base de datos vectorial. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planificado |
 
 ---
 
-## 🏛️ Active Architecture: Serverless Lakehouse (Sprint 1)
+## 🏛️ Arquitectura Activa: Serverless Lakehouse (Sprint 1)
 
 ```
-                                  DATA INGESTION & STORAGE FLOW
+                               FLUJO DE INGESTA Y PROCESAMIENTO
                                   
  ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────────────────┐
- │   RAW INGESTION      │        │  BRONZE LAYER (RAW)   │        │ SILVER LAYER (CLEAN)  │
- │ 100,000+ Transactions├───────►│    Amazon S3 Bucket   ├───────►│  Databricks PySpark   │
- │ Partitioned Parquet  │        │  year=YYYY/month=MM   │        │ Schema & Deduplication│
+ │   INGESTA CRUDA      │        │  CAPA BRONZE (RAW)    │        │  CAPA SILVER (CLEAN)  │
+ │ 100,000+ Transacciones├──────►│    Amazon S3 Bucket   ├───────►│  Databricks PySpark   │
+ │  Parquet Particionado│        │  year=YYYY/month=MM   │        │ Limpieza & Tipado     │
  └──────────────────────┘        └───────────────────────┘        └───────────┬───────────┘
                                                                               │
                                                                               ▼
  ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────────────────┐
- │   ANALYTICAL SQL     │        │  CENTRAL DATA CATALOG │        │  GOLD LAYER (MARTS)   │
+ │   CONSULTAS SQL      │        │  CATÁLOGO CENTRALIZADO│        │   CAPA GOLD (MARTS)   │
  │   Amazon Athena      │◄───────┤    AWS Glue Catalog   │◄───────┤   Delta Lake (ACID)   │
- │ Serverless Analytics │        │    (Glue Crawler)     │        │  Aggregated Business  │
+ │ Consultas Bajo Costo │        │    (Glue Crawler)     │        │  Métricas de Negocio  │
  └──────────────────────┘        └───────────────────────┘        └───────────────────────┘
 ```
 
-### Key Engineering Artifacts in Sprint 1:
-1. **Partitioned Data Pipeline (`generate_sample_dataset.py`):**
-   * Generates 100,000+ realistic e-commerce and financial events.
-   * Physically partitioned into Parquet directories (`year=2026/month=10/day=DD`) for optimal **predicate pushdown** and cloud cost reduction.
-2. **Defensive Ingestion Automation (`sync_bronze_lakehouse.sh`):**
-   * Engineered with **Bash Strict Mode** (`set -euo pipefail`) to prevent silent failures.
-   * Auto-discovers relative paths (cross-platform compatible between Windows, Linux containers, and EC2).
-   * Executes idempotent **`aws s3 sync`** with safe `--dryrun` pre-flight checks.
+### Componentes de Ingeniería del Sprint 1:
+1. **Pipeline de Datos Particionado (`generate_sample_dataset.py`):**
+   * Genera más de 100,000 eventos transaccionales realistas de e-commerce y pagos.
+   * Particionado físico en directorios Parquet (`year=2026/month=10/day=DD`) para maximizar el **predicate pushdown** y reducir costos de escaneo en la nube.
+2. **Automatización Defensiva en Bash (`sync_bronze_lakehouse.sh`):**
+   * Construido con **Bash Strict Mode** (`set -euo pipefail`) para detenerse inmediatamente ante fallos.
+   * Detección dinámica de rutas relativas (portable entre Windows, contenedores Linux y servidores EC2).
+   * Sincronización idempotente con **`aws s3 sync`** y simulaciones de seguridad con `--dryrun`.
 
 ---
 
-## ⚡ Performance Engineering & Database Internals (`daily_drills/`)
+## ⚡ Ingeniería de Rendimiento & Internals de Bases de Datos (`daily_drills/`)
 
-In enterprise environments, writing SQL is not enough; **understanding how the database storage engine executes queries is what guarantees sub-second SLAs**.
+En entornos corporativos, escribir SQL no basta; **entender cómo el motor almacena y lee los datos es lo que garantiza tiempos de respuesta en milisegundos**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  BENCHMARK: 120,000 ROWS TABLE SCAN VS. B-TREE SEARCH                                  │
+│  BENCHMARK: 120,000 FILAS TABLE SCAN VS. BÚSQUEDA POR ÍNDICE B-TREE                    │
 ├────────────────────────────────┬───────────────────────────────────────────────────────┤
-│ WITHOUT INDEX (Table Scan):    │ detail: SCAN FactSales                                │
-│ Cost: High I/O ($O(N)$)       │ Scans 120,000 rows sequentially from disk             │
+│ SIN ÍNDICE (Table Scan):       │ detail: SCAN FactSales                                │
+│ Costo: Alto I/O ($O(N)$)       │ Lee 120,000 filas de forma secuencial en disco        │
 ├────────────────────────────────┼───────────────────────────────────────────────────────┤
-│ WITH COMPOSITE INDEX:          │ detail: SEARCH FactSales USING INDEX IX_Cust_Date     │
-│ Cost: Sub-millisecond ($O(\log N)$) B-Tree binary traversal directly to target leaves  │
+│ CON ÍNDICE COMPUESTO:          │ detail: SEARCH FactSales USING INDEX IX_Cust_Date     │
+│ Costo: Milisegundos ($O(\log N)$) Salto binario directo a las hojas del árbol B-Tree   │
 └────────────────────────────────┴───────────────────────────────────────────────────────┘
 ```
 
-### 🎯 Hard Skills Demonstrated:
-* **Filtered / Partial Indexes:** Indexing only active operational records (`WHERE Status = 'PENDING'`), eliminating **97% of storage footprint** and shielding insert throughput.
-* **Covering Indexes (`INCLUDE`):** Storing projected attributes in leaf pages to eliminate expensive **Key Lookups / Bookmark Lookups**.
-* **Advanced Window Functions:**
-  * **Tie Resolution:** Precise application of `DENSE_RANK()` vs `RANK()` vs `ROW_NUMBER()`.
-  * **Optimized Running Totals:** Explicit physical frame definition (`ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`) to bypass slow `RANGE` spooling.
-  * **Period-over-Period (MoM):** Zero-join sequential delta calculations with `LAG()` / `LEAD()`.
+### 🎯 Competencias Demostradas en Código:
+* **Índices Filtrados (Partial Indexes):** Indexación exclusiva de registros operativos frecuentes (`WHERE Status = 'PENDING'`), ahorrando el **97% de espacio en disco** y acelerando las inserciones de ventas completadas.
+* **Índices Cubrientes (`INCLUDE`):** Almacenamiento de columnas proyectadas en el nivel hoja para eliminar el costoso **Key Lookup / Bookmark Lookup**.
+* **Funciones de Ventana Avanzadas:**
+  * **Resolución de Empates:** Diferenciación estricta entre `DENSE_RANK()`, `RANK()` y `ROW_NUMBER()`.
+  * **Totales Acumulados Optimizados:** Definición física del marco (`ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`) para evitar sobrecostos por escaneos `RANGE`.
+  * **Análisis Periodo a Periodo (MoM):** Cálculo de variaciones porcentuales sin hacer `SELF JOIN` mediante `LAG()` y `LEAD()`.
 
 ---
 
-## 📂 Repository Topology
+## 📂 Topología del Repositorio
 
 ```bash
 mastery-lab/
-├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse on AWS
-│   ├── README.md                       # Architecture diagram and step-by-step setup
-│   ├── scripts/                        # Ingestion, validation & PySpark jobs
-│   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
-│   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
-│   └── data/                           # Partitioned raw data layer (local dev)
-├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow & dbt Core
-│   └── README.md                       # Containerized orchestration guide
-├── sprint_03_mlops_rag/                # SPRINT 3: Production MLOps & GenAI
-│   └── README.md                       # FastAPI, Model Registry & Vector Database
-└── daily_drills/                       # Technical Drills & Performance Engineering
-    └── sql_tuning/                     # SQL Server, PostgreSQL & analytical engines
-        ├── 01_window_functions.sql     # Live-coding interview patterns
-        ├── 02_sql_server_tsql_tuning.sql # Deep engine tuning & transaction handling
-        └── dbeaver_interactive_lab.sql # Benchmark test suite (120,000+ records)
+├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse en AWS
+│   ├── README.md                       # Diagrama de arquitectura y guía paso a paso
+│   ├── scripts/                        # Ingesta, validación y jobs de PySpark
+│   │   ├── generate_sample_dataset.py  # Generador de dataset Parquet particionado
+│   │   └── sync_bronze_lakehouse.sh    # Script de automatización en Bash
+│   └── data/                           # Capa de datos crudos locales (ignorado en Git)
+├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow y dbt Core
+│   └── README.md                       # Guía de orquestación en contenedores
+├── sprint_03_mlops_rag/                # SPRINT 3: MLOps Productivo y GenAI
+│   └── README.md                       # FastAPI, Model Registry y Base Vectorial
+└── daily_drills/                       # Drills Técnicos & Performance Engineering
+    └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y motores analíticos
+        ├── 01_window_functions.sql     # Patrones frecuentes de entrevistas técnicas
+        ├── 02_sql_server_tsql_tuning.sql # Tuning profundo de motor y transacciones
+        └── dbeaver_interactive_lab.sql # Suite de pruebas ejecutada en 120,000+ registros
 ```
 
 ---
 
-## 🛠️ Technology Ecosystem
+## 🛠️ Ecosistema Tecnológico
 
-| Category | Technologies & Tools |
+| Categoría | Tecnologías y Herramientas |
 | :--- | :--- |
-| **Cloud & Storage** | AWS S3, AWS Glue, Amazon Athena, Delta Lake, Parquet Format |
-| **Data Processing** | Apache Spark, PySpark, Databricks, Python 3.12, DuckDB |
-| **Orchestration & DevOps**| Apache Airflow, Docker, Docker Compose, Git, Bash Scripting |
-| **Data Modeling & SQL** | Microsoft SQL Server, PostgreSQL, dbt Core, T-SQL, DBeaver |
-| **Serving & AI** | FastAPI, MLflow, Scikit-learn, ChromaDB, LangChain |
+| **Cloud & Almacenamiento** | AWS S3, AWS Glue, Amazon Athena, Delta Lake, Formato Parquet |
+| **Procesamiento de Datos** | Apache Spark, PySpark, Databricks, Python 3.12, DuckDB |
+| **Orquestación & DevOps** | Apache Airflow, Docker, Docker Compose, Git, Bash Scripting |
+| **Modelado de Datos & SQL**| Microsoft SQL Server, PostgreSQL, dbt Core, T-SQL, DBeaver |
+| **Servicio de Modelos & IA** | FastAPI, MLflow, Scikit-learn, ChromaDB, LangChain |
 
 ---
 
-## 🛡️ Production Standards
-1. **Idempotency by Design:** All ETL pipelines can run repeatedly without producing duplicated data or side effects.
-2. **Defensive Operations:** Scripts employ strict exit codes, input validation, and dry-run execution modes.
-3. **Optimized I/O:** Partition pruning, columnar compression, and index coverage are prioritized over raw compute scale.
+## 🛡️ Estándares Productivos
+1. **Idempotencia por Diseño:** Todos los pipelines ETL pueden reejecutarse sin generar datos duplicados ni inconsistencias.
+2. **Operaciones Defensivas:** Scripts con códigos de salida estrictos, validación previa de insumos y modos `--dryrun`.
+3. **Optimización de I/O:** Priorización de compresión columnar, particionado inteligente y cobertura de índices antes de escalar cómputo innecesariamente.
 
 ---
 
 <div align="center">
-  <sub>Maintained by <b>Kevin Stick Arciniegas Marquez</b> • Open for Data Engineering & Cloud Architecture opportunities.</sub>
+  <sub>Mantenido por <b>Kevin Stick Arciniegas Marquez</b> • Abierto a oportunidades en Ingeniería de Datos y Arquitectura Cloud.</sub>
 </div>
