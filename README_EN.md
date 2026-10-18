@@ -64,9 +64,9 @@ For deep dives into architectural decisions, system design patterns, and technic
 
 | Handbook | Core Domain | Key Concepts Covered | Link |
 | :--- | :--- | :--- | :---: |
-| 📘 **Handbook 01: Databricks & Lakehouse** | Medallion Architecture & Delta Lake | SparkSession, Distributed Compute, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [View Handbook 01](sprint_01_aws_lakehouse/NOTAS_CLASE_DATABRICKS.md) |
-| 📗 **Handbook 02: SQL & T-SQL Performance** | Relational Engine Tuning | `EXPLAIN QUERY PLAN` (Scan vs Seek), Covering Indexes (`INCLUDE`), Filtered Indexes, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [View Handbook 02](daily_drills/sql_tuning/CUADERNO_ESTUDIO_SQL_TUNING.md) |
-| 📙 **Handbook 03: Infra & DataOps** | Linux Scripting & Cloud Automation | Bash Strict Mode (`set -euo pipefail`), Dynamic path resolution, Defensive assertions, Idempotency with `aws s3 sync` | [View Handbook 03](daily_drills/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
+| 📘 **Handbook 01: Databricks & Lakehouse** | Medallion Architecture & Delta Lake | SparkSession, Distributed Compute, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [View Handbook 01](sprint_01_aws_lakehouse/docs/NOTAS_CLASE_DATABRICKS.md) |
+| 📗 **Handbook 02: SQL & T-SQL Performance** | Relational Engine Tuning | `EXPLAIN QUERY PLAN` (Scan vs Seek), Covering Indexes (`INCLUDE`), Filtered Indexes, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [View Handbook 02](daily_drills/sql_tuning/docs/CUADERNO_ESTUDIO_SQL_TUNING.md) |
+| 📙 **Handbook 03: Infra & DataOps** | Linux Scripting & Cloud Automation | Bash Strict Mode (`set -euo pipefail`), Dynamic path resolution, Defensive assertions, Idempotency with `aws s3 sync` | [View Handbook 03](daily_drills/bash_scripting/docs/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
 
 ---
 
@@ -132,16 +132,23 @@ In enterprise environments, writing SQL is not enough; **understanding how the d
 mastery-lab/
 ├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse on AWS
 │   ├── README.md                       # Architecture diagram and step-by-step setup
+│   ├── docs/                           # Engineering Handbook (NOTAS_CLASE_DATABRICKS.md)
 │   ├── scripts/                        # Ingestion, validation & PySpark jobs
+│   │   ├── 01_medallion_lakehouse_pipeline.py # Local Databricks backup script
 │   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
 │   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
 │   └── data/                           # Partitioned raw data layer (local dev)
 ├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow & dbt Core
-│   └── README.md                       # Containerized orchestration guide
+│   ├── README.md                       # Containerized orchestration guide
+│   └── docs/                           # DataOps Handbook (Upcoming)
 ├── sprint_03_mlops_rag/                # SPRINT 3: Production MLOps & GenAI
-│   └── README.md                       # FastAPI, Model Registry & Vector Database
+│   ├── README.md                       # FastAPI, Model Registry & Vector Database
+│   └── docs/                           # MLOps Handbook (Upcoming)
 └── daily_drills/                       # Technical Drills & Performance Engineering
-    └── sql_tuning/                     # SQL Server, PostgreSQL & analytical engines
+    ├── bash_scripting/
+    │   └── docs/                       # Bash & DataOps Handbook
+    └── sql_tuning/                     # SQL Server, PostgreSQL & SQLite Benchmarks
+        ├── docs/                       # SQL Performance Tuning Handbook
         ├── 01_window_functions.sql     # Live-coding interview patterns
         ├── 02_sql_server_tsql_tuning.sql # Deep engine tuning & transaction handling
         └── dbeaver_interactive_lab.sql # Benchmark test suite (120,000+ records)

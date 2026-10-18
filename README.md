@@ -64,9 +64,9 @@ Para profundizar en los conceptos arquitectónicos, patrones de diseño y prepar
 
 | Cuaderno de Cátedra | Tema Principal | Conceptos Clave | Enlace |
 | :--- | :--- | :--- | :---: |
-| 📘 **Cátedra 01: Databricks & Lakehouse** | Arquitectura Medallion & Delta Lake | SparkSession, Cómputo Distribuido, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [Ver Cuaderno 01](sprint_01_aws_lakehouse/NOTAS_CLASE_DATABRICKS.md) |
-| 📗 **Cátedra 02: SQL & T-SQL Performance** | Optimización de Bases de Datos | `EXPLAIN QUERY PLAN` (Scan vs Seek), Índices `INCLUDE`, Índices Filtrados, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [Ver Cuaderno 02](daily_drills/sql_tuning/CUADERNO_ESTUDIO_SQL_TUNING.md) |
-| 📙 **Cátedra 03: Infra & DataOps** | Automatización en Linux & Cloud | Bash Strict Mode (`set -euo pipefail`), Rutas dinámicas, Programación defensiva, Idempotencia con `aws s3 sync` | [Ver Cuaderno 03](daily_drills/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
+| 📘 **Cátedra 01: Databricks & Lakehouse** | Arquitectura Medallion & Delta Lake | SparkSession, Cómputo Distribuido, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [Ver Cuaderno 01](sprint_01_aws_lakehouse/docs/NOTAS_CLASE_DATABRICKS.md) |
+| 📗 **Cátedra 02: SQL & T-SQL Performance** | Optimización de Bases de Datos | `EXPLAIN QUERY PLAN` (Scan vs Seek), Índices `INCLUDE`, Índices Filtrados, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [Ver Cuaderno 02](daily_drills/sql_tuning/docs/CUADERNO_ESTUDIO_SQL_TUNING.md) |
+| 📙 **Cátedra 03: Infra & DataOps** | Automatización en Linux & Cloud | Bash Strict Mode (`set -euo pipefail`), Rutas dinámicas, Programación defensiva, Idempotencia con `aws s3 sync` | [Ver Cuaderno 03](daily_drills/bash_scripting/docs/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
 
 ---
 
@@ -132,16 +132,23 @@ En entornos corporativos, escribir SQL no basta; **entender cómo el motor almac
 mastery-lab/
 ├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse en AWS
 │   ├── README.md                       # Diagrama de arquitectura y guía paso a paso
+│   ├── docs/                           # Cuaderno de Cátedra (NOTAS_CLASE_DATABRICKS.md)
 │   ├── scripts/                        # Ingesta, validación y jobs de PySpark
+│   │   ├── 01_medallion_lakehouse_pipeline.py # Script respaldado de Databricks
 │   │   ├── generate_sample_dataset.py  # Generador de dataset Parquet particionado
 │   │   └── sync_bronze_lakehouse.sh    # Script de automatización en Bash
 │   └── data/                           # Capa de datos crudos locales (ignorado en Git)
 ├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow y dbt Core
-│   └── README.md                       # Guía de orquestación en contenedores
+│   ├── README.md                       # Guía de orquestación en contenedores
+│   └── docs/                           # Cuaderno de Cátedra de DataOps (Próximo)
 ├── sprint_03_mlops_rag/                # SPRINT 3: MLOps Productivo y GenAI
-│   └── README.md                       # FastAPI, Model Registry y Base Vectorial
+│   ├── README.md                       # FastAPI, Model Registry y Base Vectorial
+│   └── docs/                           # Cuaderno de Cátedra de MLOps (Próximo)
 └── daily_drills/                       # Drills Técnicos & Performance Engineering
-    └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y motores analíticos
+    ├── bash_scripting/
+    │   └── docs/                       # Cuaderno de Cátedra de Bash & DataOps
+    └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y SQLite
+        ├── docs/                       # Cuaderno de Cátedra de SQL Performance Tuning
         ├── 01_window_functions.sql     # Patrones frecuentes de entrevistas técnicas
         ├── 02_sql_server_tsql_tuning.sql # Tuning profundo de motor y transacciones
         └── dbeaver_interactive_lab.sql # Suite de pruebas ejecutada en 120,000+ registros
