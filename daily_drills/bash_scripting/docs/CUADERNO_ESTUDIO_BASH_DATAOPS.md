@@ -116,7 +116,53 @@ aws s3 sync "/ruta/local/data/raw" "s3://kevin-lakehouse-data-dev/bronze/transac
 
 ---
 
-## 6. Preguntas Clave de Entrevistas de DataOps / Infra
+## 6. Arquitectura de Ingesta Defensiva: Checksums, Contrato de Esquema y Cuarentena
+
+En nuestro laboratorio práctico [`drill_01_dataops_validator.sh`](file:///c:/Users/pc/Desktop/Proyectos%20BigData/mastery-lab/daily_drills/bash_scripting/scripts/drill_01_dataops_validator.sh) implementamos el patrón estándar de la industria conocido como **"Dead-Letter Dropzone & Defensive Ingestion"**:
+
+```
+[Proveedores / SFTP / Landing Zone]
+                 │
+                 ▼
+       ┌──────────────────┐
+       │ ¿Es de 0 bytes?  │ ──── SÍ ────► [data/quarantine/] (Alerta)
+       └──────────────────┘
+                 │ NO
+                 ▼
+       ┌──────────────────┐
+       │ ¿Esquema coincide│ ──── NO ────► [data/quarantine/] (Alerta)
+       │ con el Contrato? │
+       └──────────────────┘
+                 │ SÍ
+                 ▼
+       ┌──────────────────┐
+       │ Huella Cripto    │ ────► Registro en logs/dataops_pipeline.log
+       │ SHA-256 Checksum │
+       └──────────────────┘
+                 │
+                 ▼
+       ┌──────────────────┐
+       │ Particionado por │
+       │ Fecha & GZIP -9  │ ────► [data/processed/year=YYYY/month=MM/]
+       └──────────────────┘
+```
+
+### Las 5 Reglas de Oro Implementadas:
+
+1. **Detección de Archivos Vacíos (`[ ! -s "$file" ]`):**  
+   Si una transferencia SFTP se interrumpe y deja un archivo de 0 bytes, el operador `! -s` lo detecta al instante antes de que rompa los lectores de PySpark.
+2. **Contrato de Esquema (*Schema Contract* con `head -n 1`):**  
+   Compara los nombres exactos y el orden de las columnas esperadas. Si un proveedor añade o renombra columnas sin previo aviso, el archivo no pasa.
+3. **Firma Criptográfica SHA-256 (`sha256sum`):**  
+   Genera una huella digital única e inmutable de 64 caracteres hexadecimales. Permite demostrar ante auditorías SOX o financieras que los datos en el Lakehouse son idénticos a los recibidos en origen.
+4. **Zona de Cuarentena (*Dead-Letter Dropzone*):**  
+   En vez de detener todo el pipeline y no procesar nada, el script aísla el archivo defectuoso en `quarantine/` para investigación manual, y permite que los archivos válidos continúen hacia el Lakehouse.
+5. **Compresión Atómica `gzip -9`:**  
+   Reduce el tamaño de los CSVs entre un **75% y un 85%**, ahorrando costos de almacenamiento en Amazon S3 y reduciendo drásticamente el tiempo de transferencia por red.
+
+---
+
+## 7. Preguntas Clave de Entrevistas de DataOps / Infra
 
 ### P1: "¿Qué significa que un script o pipeline sea 'idempotente'?"
 > **Respuesta Senior:**  
@@ -125,3 +171,11 @@ aws s3 sync "/ruta/local/data/raw" "s3://kevin-lakehouse-data-dev/bronze/transac
 ### P2: "¿Por qué incluir `set -euo pipefail` en un script de Bash si en local todo corre bien?"
 > **Respuesta Senior:**  
 > Porque en entornos locales uno suele supervisar la terminal, pero en producción los scripts corren desatendidos dentro de contenedores o tareas de Airflow. Si un comando de descarga de datos falla silenciosamente, un script sin `set -e` continuaría ejecutando las transformaciones sobre archivos vacíos, corrompiendo las tablas analíticas y generando reportes financieros con datos incompletos.
+
+### P3: "¿Cómo manejas archivos corruptos en una Landing Zone sin tumbar el pipeline de producción?"
+> **Respuesta Senior:**  
+> Implementando un patrón de zona de cuarentena (*Dead-Letter Dropzone*). El script de Bash inspecciona cada archivo entrante validando que no esté vacío (`[ -s ]`) y que cumpla el contrato de esquema en la primera línea. Si un archivo falla, se mueve inmediatamente a `quarantine/` y se emite una alerta, permitiendo que el resto de los archivos sanos del lote se compriman y se carguen al Lakehouse sin detener la operación de la empresa.
+
+### P4: "¿Qué trampa ocurre al usar `((count++))` en un script con `set -e` y cómo se soluciona?"
+> **Respuesta Senior:**  
+> Cuando `count` vale `0`, el post-incremento devuelve su valor previo (`0`). En la evaluación aritmética de Bash `(( 0 ))` retorna el código de salida **1** (que significa falso). Al estar activo `set -e`, Bash interpreta ese código 1 como un fallo fatal y aborta el script silenciosamente. La solución estándar en producción es usar la sintaxis POSIX inofensiva `count=$((count + 1))` o pre-incremento `(( ++count ))`.

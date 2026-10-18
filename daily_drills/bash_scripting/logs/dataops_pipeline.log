@@ -1,0 +1,34 @@
+[2026-10-18 16:15:48] [INFO] Iniciando Pre-flight Checks de dependencias del sistema...
+[2026-10-18 16:15:48] [INFO] Pre-flight checks aprobados: todas las herramientas están disponibles.
+[2026-10-18 16:15:48] [INFO] Configurando lote de prueba en Landing Zone: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/landing
+[2026-10-18 16:15:48] [INFO] Lote de prueba generado con éxito (2 válidos, 1 vacío, 1 esquema corrupto).
+[2026-10-18 16:15:48] [INFO] Iniciando procesamiento de archivos en: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/landing
+[2026-10-18 16:15:48] [INFO] Evaluando archivo: transactions_20261018_corrupt_schema.csv
+[2026-10-18 16:15:48] [ERROR] Esquema roto en transactions_20261018_corrupt_schema.csv.
+[2026-10-18 16:15:48] [ERROR]   Esperado: transaction_id,customer_id,sale_date,amount,status
+[2026-10-18 16:15:48] [ERROR]   Recibido: id,cliente,fecha,precio,estado
+[2026-10-18 16:15:48] [ERROR]   Acción: Moviendo a CUARENTENA
+[2026-10-18 16:20:19] [INFO] Iniciando Pre-flight Checks de dependencias del sistema...
+[2026-10-18 16:20:19] [INFO] Pre-flight checks aprobados: todas las herramientas están disponibles.
+[2026-10-18 16:20:19] [INFO] Configurando lote de prueba en Landing Zone: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/landing
+[2026-10-18 16:20:19] [INFO] Lote de prueba generado con éxito (2 válidos, 1 vacío, 1 esquema corrupto).
+[2026-10-18 16:20:19] [INFO] Iniciando procesamiento de archivos en: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/landing
+[2026-10-18 16:20:19] [INFO] Evaluando archivo: transactions_20261018_corrupt_schema.csv
+[2026-10-18 16:20:19] [ERROR] Esquema roto en transactions_20261018_corrupt_schema.csv.
+[2026-10-18 16:20:19] [ERROR]   Esperado: transaction_id,customer_id,sale_date,amount,status
+[2026-10-18 16:20:19] [ERROR]   Recibido: id,cliente,fecha,precio,estado
+[2026-10-18 16:20:19] [ERROR]   Acción: Moviendo a CUARENTENA
+[2026-10-18 16:20:19] [INFO] Evaluando archivo: transactions_20261018_empty.csv
+[2026-10-18 16:20:19] [ERROR] Archivo vacío detectado (0 bytes): transactions_20261018_empty.csv -> Moviendo a CUARENTENA
+[2026-10-18 16:20:19] [INFO] Evaluando archivo: transactions_20261018_part1.csv
+[2026-10-18 16:20:19] [INFO] Checksum SHA-256 verificado: 787345982719d38d... [OK]
+[2026-10-18 16:20:19] [INFO] Registros válidos: 3 filas
+[2026-10-18 16:20:19] [INFO] Archivo archivado y comprimido en: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/processed/year=2026/month=10/transactions_20261018_part1.csv.gz
+[2026-10-18 16:20:19] [INFO] Evaluando archivo: transactions_20261018_part2.csv
+[2026-10-18 16:20:19] [INFO] Checksum SHA-256 verificado: 51a548346a79d253... [OK]
+[2026-10-18 16:20:19] [INFO] Registros válidos: 2 filas
+[2026-10-18 16:20:19] [INFO] Archivo archivado y comprimido en: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/data/processed/year=2026/month=10/transactions_20261018_part2.csv.gz
+[2026-10-18 16:20:19] [INFO] REPORTE FINAL DE DATAOPS:
+[2026-10-18 16:20:19] [INFO]   Archivos procesados y comprimidos con éxito: 2
+[2026-10-18 16:20:19] [WARN]   Archivos defectuosos enviados a cuarentena: 2
+[2026-10-18 16:20:19] [INFO]   Auditoría completa registrada en: /mnt/c/Users/pc/Desktop/Proyectos BigData/mastery-lab/daily_drills/bash_scripting/logs/dataops_pipeline.log
