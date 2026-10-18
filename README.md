@@ -46,15 +46,27 @@ Este repositorio es un monorepo de nivel productivo que contiene arquitecturas d
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │  ESTADO GENERAL DEL PROYECTO                                                           │
-│  [■■■■■■■■■□□□□□□□□□□□] 35% Entregables Completados                                   │
+│  [■■■■■■■■■■■■■■□□□□□□] 70% Entregables de Sprint 1 Completados                        │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Fase / Hito | Arquitectura & Alcance | Stack Principal | Estado |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (Sprint Activo)** |
+| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (70% Completado)** |
 | **Sprint 2: DataOps & Orquestación** | Pipeline ELT corporativo en Docker. Ingesta relacional desde SQL Server, DAGs modulares con TaskFlow API, modelado dimensional Kimball con dbt Core y contratos de datos automáticos. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planificado |
 | **Sprint 3: MLOps & Servicio de GenAI** | Microservicio de inferencia de alto rendimiento con FastAPI, tracking de experimentos en MLflow, imágenes Docker multi-stage y recuperación semántica RAG con base de datos vectorial. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planificado |
+
+---
+
+## 📚 Cuadernos de Cátedra & Notas de Ingeniería
+
+Para profundizar en los conceptos arquitectónicos, patrones de diseño y preparación de entrevistas técnicas, este repositorio incluye **3 cuadernos de cátedra de nivel Senior**:
+
+| Cuaderno de Cátedra | Tema Principal | Conceptos Clave | Enlace |
+| :--- | :--- | :--- | :---: |
+| 📘 **Cátedra 01: Databricks & Lakehouse** | Arquitectura Medallion & Delta Lake | SparkSession, Cómputo Distribuido, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [Ver Cuaderno 01](sprint_01_aws_lakehouse/NOTAS_CLASE_DATABRICKS.md) |
+| 📗 **Cátedra 02: SQL & T-SQL Performance** | Optimización de Bases de Datos | `EXPLAIN QUERY PLAN` (Scan vs Seek), Índices `INCLUDE`, Índices Filtrados, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [Ver Cuaderno 02](daily_drills/sql_tuning/CUADERNO_ESTUDIO_SQL_TUNING.md) |
+| 📙 **Cátedra 03: Infra & DataOps** | Automatización en Linux & Cloud | Bash Strict Mode (`set -euo pipefail`), Rutas dinámicas, Programación defensiva, Idempotencia con `aws s3 sync` | [Ver Cuaderno 03](daily_drills/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
 
 ---
 

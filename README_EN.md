@@ -46,15 +46,27 @@ This repository is a production-grade monorepo containing end-to-end data archit
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │  SPRINT STATUS OVERVIEW                                                                │
-│  [■■■■■■■■■□□□□□□□□□□□] 35% Completed Milestone Delivery                               │
+│  [■■■■■■■■■■■■■■□□□□□□] 70% Completed Milestone Delivery                               │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Phase / Milestone | Architecture & Scope | Core Stack | Status |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Serverless Cloud Lakehouse** | Scalable Medallion Lakehouse on AWS. Partitioned Parquet ingestion, PySpark cleaning, Delta Lake ACID transactions, Glue Data Catalog, and Athena analytics. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **IN PROGRESS (Active Sprint)** |
+| **Sprint 1: Serverless Cloud Lakehouse** | Scalable Medallion Lakehouse on AWS. Partitioned Parquet ingestion, PySpark cleaning, Delta Lake ACID transactions, Glue Data Catalog, and Athena analytics. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **IN PROGRESS (70% Delivered)** |
 | **Sprint 2: DataOps & Orchestration** | Enterprise ELT orchestration in Docker. Relational ingestion from SQL Server, modular DAGs with TaskFlow API, dbt Core star-schema modeling, and automated data contracts. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planned |
 | **Sprint 3: MLOps & GenAI Serving** | High-performance inference microservice with FastAPI, experiment tracking with MLflow, containerized multi-stage builds, and RAG retrieval via Vector DB. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planned |
+
+---
+
+## 📚 Engineering Study Handbooks
+
+For deep dives into architectural decisions, system design patterns, and technical interview preparation, this repository provides **3 Senior-level Engineering Handbooks**:
+
+| Handbook | Core Domain | Key Concepts Covered | Link |
+| :--- | :--- | :--- | :---: |
+| 📘 **Handbook 01: Databricks & Lakehouse** | Medallion Architecture & Delta Lake | SparkSession, Distributed Compute, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [View Handbook 01](sprint_01_aws_lakehouse/NOTAS_CLASE_DATABRICKS.md) |
+| 📗 **Handbook 02: SQL & T-SQL Performance** | Relational Engine Tuning | `EXPLAIN QUERY PLAN` (Scan vs Seek), Covering Indexes (`INCLUDE`), Filtered Indexes, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [View Handbook 02](daily_drills/sql_tuning/CUADERNO_ESTUDIO_SQL_TUNING.md) |
+| 📙 **Handbook 03: Infra & DataOps** | Linux Scripting & Cloud Automation | Bash Strict Mode (`set -euo pipefail`), Dynamic path resolution, Defensive assertions, Idempotency with `aws s3 sync` | [View Handbook 03](daily_drills/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
 
 ---
 
