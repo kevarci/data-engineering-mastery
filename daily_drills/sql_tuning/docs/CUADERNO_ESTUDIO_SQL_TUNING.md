@@ -117,10 +117,71 @@ WHERE Status = 'PENDING';
 
 ## 4. T-SQL Internals: CROSS APPLY, Tablas Temporales y Transacciones
 
-### A. `CROSS APPLY` vs `INNER JOIN`
+### A. `CROSS APPLY` vs `ROW_NUMBER()`: El Problema de los Top-N por Grupo
 
-#### La Pregunta de Entrevista:
-> *"Necesitas obtener los TOP 3 pedidos más recientes de cada uno de nuestros 50,000 clientes. ¿Por qué `CROSS APPLY` suele ser más eficiente que un `JOIN` con subconsulta o una función de ventana?"*
+#### 1. La Pregunta Clásica de Entrevista:
+> *"De una tabla con 50 millones de ventas, necesitas extraer únicamente las 2 mejores compras de cada cliente. ¿Cómo lo resuelves y qué ventajas de rendimiento tiene `CROSS APPLY` frente a `ROW_NUMBER()`?"*
+
+---
+
+#### 2. Solución Universal con CTE y `ROW_NUMBER()` (Comentada Paso a Paso):
+Esta es la solución estándar ANSI SQL que corre en SQLite, PostgreSQL, Snowflake, Databricks y SQL Server:
+
+```sql
+-- PASO 1: Creamos un CTE (tabla virtual temporal en memoria) para rankear las compras.
+-- ¿Por qué? Porque en SQL es ilegal escribir "WHERE ROW_NUMBER() <= 2" directamente.
+WITH RankedSales AS (
+    SELECT 
+        c.CustomerID,       -- ID del cliente (Dimensión)
+        c.CustomerName,     -- Nombre del cliente (Dimensión)
+        s.SaleID,           -- ID único de la transacción (Hecho)
+        s.SaleDate,         -- Fecha en que ocurrió la compra
+        s.Amount,           -- Monto en dinero de la transacción
+        
+        -- AQUÍ OCURRE LA MAGIA DEL RANKING:
+        ROW_NUMBER() OVER (
+            -- PARTITION BY CustomerID:
+            -- Reinicia el contador a 1 cada vez que cambia de cliente.
+            -- El Cliente 1 tendrá sus puestos 1, 2, 3...
+            -- El Cliente 2 volverá a empezar en 1, 2, 3...
+            PARTITION BY s.CustomerID 
+            
+            -- ORDER BY s.Amount DESC:
+            -- Ordena las compras de ESE cliente específico de mayor a menor monto.
+            -- Puesto 1 = La compra más cara de su historia.
+            -- Puesto 2 = Su segunda mayor compra.
+            ORDER BY s.Amount DESC
+        ) AS ranking_compra
+
+    -- Unimos la tabla de Clientes con su historial de Ventas
+    FROM DimCustomer c
+    JOIN FactSales s ON c.CustomerID = s.CustomerID
+    WHERE c.CustomerID IN (1, 2, 3, 4, 5)
+)
+
+-- PASO 2: Consulta final que extrae solo el TOP 2 de cada cliente
+SELECT 
+    CustomerID,
+    CustomerName,
+    SaleID,
+    SaleDate,
+    Amount,
+    ranking_compra
+FROM RankedSales
+
+-- FILTRO DE NEGOCIO:
+-- Excluimos los puestos 3, 4, 5... Nos quedamos ÚNICAMENTE con los 2 primeros puestos
+WHERE ranking_compra <= 2
+
+-- ORDEN FINAL:
+-- Presentamos los resultados agrupados por cliente y de mayor a menor compra
+ORDER BY CustomerID, ranking_compra;
+```
+
+---
+
+#### 3. Solución Avanzada en Microsoft SQL Server con `CROSS APPLY`:
+En T-SQL, podemos evitar particionar toda la historia de la tabla evaluando una subconsulta correlacionada fila por fila:
 
 ```sql
 SELECT 
@@ -131,19 +192,24 @@ SELECT
     top_orders.Amount
 FROM DimCustomer c
 CROSS APPLY (
-    SELECT TOP (3) 
+    -- Esta subconsulta se ejecuta de forma lateral POR CADA CLIENTE:
+    SELECT TOP (2) 
         s.SaleID,
         s.SaleDate,
         s.Amount
     FROM FactSales s
     WHERE s.CustomerID = c.CustomerID
-    ORDER BY s.SaleDate DESC, s.SaleID DESC
+    ORDER BY s.Amount DESC
 ) AS top_orders
-ORDER BY c.CustomerID, top_orders.SaleDate DESC;
+ORDER BY c.CustomerID, top_orders.Amount DESC;
 ```
 
-* **El problema de `ROW_NUMBER()`:** En tablas con millones de ventas, `ROW_NUMBER() OVER (PARTITION BY CustomerID...)` obliga al motor a particionar y ordenar **toda la historia de ventas** en memoria antes de poder filtrar `WHERE rnk <= 3`.
-* **La ventaja de `CROSS APPLY`:** Evalúa la subconsulta correlacionada **cliente por cliente**. Si hay un índice en `(CustomerID, SaleDate DESC)`, va directo al índice, lee únicamente los 3 primeros registros y se detiene. Hace exactamente `50,000 clientes × 3 lecturas = 150,000 operaciones` en vez de escanear millones.
+---
+
+#### 4. Comparativa de Rendimiento Senior (El Secreto del Optimizador):
+* **El costo oculto de `ROW_NUMBER()`:** En tablas de 50 millones de ventas, el motor tiene que particionar y ordenar en memoria (**Sort operator**) **las 50 millones de filas**, para luego descartar el 95% al filtrar `WHERE ranking_compra <= 2`.
+* **La ventaja letal de `CROSS APPLY`:** Si existe un índice compuesto en `FactSales(CustomerID, Amount DESC)`, `CROSS APPLY` entra directamente por el árbol B-Tree mediante un **Index Seek**, lee únicamente las 2 primeras hojas de ese cliente y **se detiene al instante**.
+* **Matemática:** Si tienes 5,000 clientes, `CROSS APPLY` realiza exactamente $5,000 \times 2 = 10,000$ lecturas indexadas ultra-rápidas, en vez de ordenar 50 millones de registros en TempDB.
 
 ---
 
@@ -201,6 +267,60 @@ END;
 ```
 
 ---
+
+### D. `MERGE INTO` & UPSERT Atómico (La Muerte del Doble Pase)
+
+En pipelines ETL / ELT cotidianos, recibimos lotes diarios con registros nuevos y registros existentes modificados.
+
+#### 1. El Error del Junior (UPDATE seguido de INSERT manual):
+```sql
+-- ❌ INEFICIENTE Y PELIGROSO:
+UPDATE FactSales SET Amount = s.Amount, Status = s.Status FROM StagingSales s WHERE FactSales.SaleID = s.SaleID;
+INSERT INTO FactSales SELECT * FROM StagingSales WHERE SaleID NOT IN (SELECT SaleID FROM FactSales);
+```
+* **Peligros en producción:**
+  1. **Doble escaneo de tabla:** Desperdicia I/O de disco y memoria al leer la tabla dos veces.
+  2. **Condiciones de Carrera (*Race Conditions*):** Si otro proceso escribe en la tabla entre el UPDATE y el INSERT, se generan errores de clave duplicada o inconsistencias.
+  3. **Bloqueos (*Deadlocks*):** Bloquea la tabla dos veces consecutivas, frenando las transacciones de los usuarios.
+
+#### 2. La Solución Atómica Universal:
+* **En SQLite 3.24+ y PostgreSQL (Sintaxis `ON CONFLICT`):**
+```sql
+INSERT INTO FactSales (SaleID, CustomerID, SaleDate, Category, Amount, Status, RegionID)
+VALUES 
+    (1, 1, '2026-10-19 12:00:00', 'Electronics', 3500.00, 'COMPLETED', 1),
+    (999999, 50, '2026-10-19 12:00:00', 'Home', 450.00, 'COMPLETED', 2)
+ON CONFLICT(SaleID) DO UPDATE SET
+    Amount   = excluded.Amount,
+    Status   = excluded.Status,
+    SaleDate = excluded.SaleDate;
+```
+
+* **En Microsoft SQL Server y Delta Lake (Sintaxis `MERGE INTO` con Auditoría):**
+```sql
+MERGE INTO dbo.FactSales AS target
+USING dbo.StagingSales AS source
+ON target.SaleID = source.SaleID
+
+-- Cuando ya existe: Se actualiza en el mismo pase
+WHEN MATCHED AND (target.Amount <> source.Amount OR target.Status <> source.Status) THEN
+    UPDATE SET 
+        target.Amount   = source.Amount,
+        target.Status   = source.Status,
+        target.SaleDate = source.SaleDate
+
+-- Cuando no existe: Se inserta
+WHEN NOT MATCHED BY TARGET THEN
+    INSERT (SaleID, CustomerID, SaleDate, Category, Amount, Status, RegionID)
+    VALUES (source.SaleID, source.CustomerID, source.SaleDate, source.Category, source.Amount, source.Status, source.RegionID)
+
+-- Auditoría en vivo de operaciones realizadas:
+OUTPUT $action AS operacion_realizada, inserted.SaleID;
+```
+
+---
+
+
 
 ## 5. Funciones de Ventana de Alto Rendimiento
 
@@ -483,3 +603,19 @@ ORDER BY cuartil;
 ### P3: *"¿Por qué `LAST_VALUE()` devuelve la fila actual en lugar del último valor histórico del cliente?"*
 > **Respuesta Senior:**  
 > Porque según el estándar ANSI SQL, al usar `ORDER BY` sin especificar el marco físico, el motor aplica por defecto `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`. El marco termina en la fila actual (`CURRENT ROW`), haciendo que el motor sea ciego a los registros futuros dentro de la partición. Se soluciona forzando el marco completo: `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.
+
+### P4: *"En una tabla con 50 millones de transacciones, necesitas extraer las 2 mejores compras de cada uno de nuestros 5,000 clientes. ¿Por qué `CROSS APPLY` suele ser órdenes de magnitud más rápido que un CTE con `ROW_NUMBER() <= 2`?"*
+> **Respuesta Senior:**  
+> Porque un CTE con `ROW_NUMBER() OVER (PARTITION BY CustomerID ORDER BY Amount DESC)` obliga al optimizador a ordenar y particionar en memoria (**Sort operator**) **las 50 millones de filas completas**, para luego descartar el 95% de los datos al filtrar `WHERE rnk <= 2`.  
+> En cambio, `CROSS APPLY` evalúa una subconsulta lateral cliente por cliente. Si contamos con un índice compuesto en `FactSales(CustomerID, Amount DESC)`, el motor realiza un **Index Seek** que va directo a la rama del cliente en el árbol B-Tree, extrae únicamente sus 2 filas superiores y **se detiene al instante**.  
+> Esto transforma un escaneo y ordenamiento masivo de 50 millones de registros en apenas **10,000 lecturas indexadas en memoria ($5,000 \text{ clientes} \times 2$)**, reduciendo el tiempo de ejecución de minutos a milisegundos y evitando spools a TempDB.
+
+### P5: *"¿Qué es un Upsert y por qué en producción nunca debes ejecutar un UPDATE manual seguido de un INSERT?"*
+> **Respuesta Senior:**  
+> Un Upsert (*Update + Insert*) sincroniza un lote entrante con una tabla destino. Ejecutar un `UPDATE` manual seguido de un `INSERT` es una mala práctica de producción por tres razones:  
+> 1. **Doble Lectura:** El motor tiene que escanear la tabla objetivo dos veces, duplicando el consumo de I/O de disco y memoria.  
+> 2. **Condiciones de Carrera (*Race Conditions*):** Si otro proceso escribe en la tabla entre el UPDATE y el INSERT, se pueden generar violaciones de clave primaria o inconsistencias graves.  
+> 3. **Bloqueos (*Deadlocks*):** Adquiere dos bloqueos de escritura separados sobre la tabla, aumentando el riesgo de congelar transacciones concurrentes.  
+> Se soluciona utilizando una sentencia atómica única en un solo pase de disco: `MERGE INTO` (en T-SQL, Delta Lake y Snowflake) o `INSERT INTO ... ON CONFLICT (...) DO UPDATE` (en PostgreSQL y SQLite).
+
+

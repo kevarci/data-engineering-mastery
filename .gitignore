@@ -14,6 +14,7 @@ tuning_lab.db
 # Heavy datasets (raw & transformed local data)
 sprint_01_aws_lakehouse/data/raw/
 *.parquet
+daily_drills/docker_infra/data/output/*.csv
 
 # Virtual Environments
 .venv/

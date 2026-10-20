@@ -55,3 +55,10 @@
    * Diagrama de arquitectura en PNG / Excalidraw.
    * `README.md` detallando reducción de costos y tiempos de consulta en Delta Lake vs CSV/JSON.
 2. Actualización de 2 líneas en tu CV maestro.
+
+---
+
+## 📓 Cuadernos de Cátedra & Documentación Técnica
+* 📘 [NOTAS_CLASE_DATABRICKS.md](docs/NOTAS_CLASE_DATABRICKS.md) - Cómputo Distribuido con PySpark, Databricks y Delta Lake (ACID, Z-Order & Time Travel).
+* 📙 [CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md](docs/CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md) - Arquitectura Serverless en AWS: Layout S3 Hive-Style, Glue Data Catalog, Crawlers y Partition Pruning en Athena.
+

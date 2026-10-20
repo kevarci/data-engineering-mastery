@@ -132,9 +132,12 @@ In enterprise environments, writing SQL is not enough; **understanding how the d
 mastery-lab/
 ├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse on AWS
 │   ├── README.md                       # Architecture diagram and step-by-step setup
-│   ├── docs/                           # Engineering Handbook (NOTAS_CLASE_DATABRICKS.md)
+│   ├── docs/                           # Engineering Handbooks
+│   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Distributed Compute & Delta Lake
+│   │   └── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog & Athena
 │   ├── scripts/                        # Ingestion, validation & PySpark jobs
 │   │   ├── 01_medallion_lakehouse_pipeline.py # Local Databricks backup script
+│   │   ├── 02_athena_partition_simulator.py   # Athena & Partition Pruning Simulator
 │   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
 │   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
 │   └── data/                           # Partitioned raw data layer (local dev)
@@ -147,6 +150,10 @@ mastery-lab/
 └── daily_drills/                       # Technical Drills & Performance Engineering
     ├── bash_scripting/
     │   └── docs/                       # Bash & DataOps Handbook
+    ├── docker_infra/                   # Containers for Data Engineering
+    │   ├── docs/                       # Docker & DataOps Handbook
+    │   ├── Dockerfile                  # Production Python 3.12-slim image
+    │   └── scripts/                    # Containerized data pipeline runner
     └── sql_tuning/                     # SQL Server, PostgreSQL & SQLite Benchmarks
         ├── docs/                       # SQL Performance Tuning Handbook
         ├── 01_window_functions.sql     # Live-coding interview patterns

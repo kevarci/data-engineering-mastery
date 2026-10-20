@@ -132,7 +132,9 @@ En entornos corporativos, escribir SQL no basta; **entender cómo el motor almac
 mastery-lab/
 ├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse en AWS
 │   ├── README.md                       # Diagrama de arquitectura y guía paso a paso
-│   ├── docs/                           # Cuaderno de Cátedra (NOTAS_CLASE_DATABRICKS.md)
+│   ├── docs/                           # Cuadernos de Cátedra
+│   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Cómputo Distribuido y Delta Lake
+│   │   └── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog y Athena
 │   ├── scripts/                        # Ingesta, validación y jobs de PySpark
 │   │   ├── 01_medallion_lakehouse_pipeline.py # Script respaldado de Databricks
 │   │   ├── generate_sample_dataset.py  # Generador de dataset Parquet particionado
@@ -146,7 +148,10 @@ mastery-lab/
 │   └── docs/                           # Cuaderno de Cátedra de MLOps (Próximo)
 └── daily_drills/                       # Drills Técnicos & Performance Engineering
     ├── bash_scripting/
-    │   └── docs/                       # Cuaderno de Cátedra de Bash & DataOps
+    ├── docker_infra/                   # Contenedores para Data Engineering
+    │   ├── docs/                       # Cuaderno de Cátedra de Docker & DataOps
+    │   ├── Dockerfile                  # Imagen Python 3.12-slim optimizada
+    │   └── scripts/                    # Pipeline de datos containerizado
     └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y SQLite
         ├── docs/                       # Cuaderno de Cátedra de SQL Performance Tuning
         ├── 01_window_functions.sql     # Patrones frecuentes de entrevistas técnicas

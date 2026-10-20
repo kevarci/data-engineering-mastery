@@ -134,3 +134,109 @@ EXPLAIN QUERY PLAN
 SELECT SaleID, CustomerID, Amount, SaleDate
 FROM FactSales
 WHERE Status = 'PENDING' AND SaleDate >= '2026-01-01';
+
+
+-- ==============================================================================
+-- SECCIÓN 4: PATRÓN TOP-N POR GRUPO (TOP 2 COMPRAS POR CLIENTE)
+-- ==============================================================================
+-- ¿QUÉ PROBLEMA DE NEGOCIO RESOLVEMOS?
+-- Un reporte muy solicitado: "De cada cliente, extrae únicamente sus 2 compras
+-- más caras registradas en la historia".
+--
+-- ¿POR QUÉ USAMOS UN CTE (WITH ...)?
+-- Porque las funciones de ventana (como ROW_NUMBER) se calculan DESPUÉS del WHERE.
+-- En SQL es ilegal escribir directamente: WHERE ROW_NUMBER() <= 2.
+-- Por eso creamos una tabla virtual temporal con el ranking (el CTE)
+-- y luego la filtramos en la consulta principal externa.
+-- ==============================================================================
+
+WITH RankedSales AS (
+    -- PASO 1: Seleccionamos los datos base y calculamos el ranking numérico
+    SELECT 
+        c.CustomerID,       -- ID del cliente (Dimensión)
+        c.CustomerName,     -- Nombre del cliente (Dimensión)
+        s.SaleID,           -- ID único de la transacción (Hecho)
+        s.SaleDate,         -- Fecha en que ocurrió la compra
+        s.Amount,           -- Monto en dinero de la transacción
+        
+        -- AQUÍ OCURRE LA MAGIA DEL RANKING:
+        ROW_NUMBER() OVER (
+            -- 1. PARTITION BY CustomerID:
+            -- Reinicia el contador a 1 cada vez que cambia de cliente.
+            -- Es decir: El Cliente 1 tendrá sus puestos 1, 2, 3...
+            --           El Cliente 2 empezará de nuevo en 1, 2, 3...
+            PARTITION BY s.CustomerID 
+            
+            -- 2. ORDER BY s.Amount DESC:
+            -- Ordena las compras de ESE cliente específico de la más cara a la más barata.
+            -- Puesto 1 = La compra más cara de su historia.
+            -- Puesto 2 = Su segunda mayor compra.
+            ORDER BY s.Amount DESC
+        ) AS ranking_compra
+
+    -- Unimos la tabla de Clientes con su historial de Ventas
+    FROM DimCustomer c
+    JOIN FactSales s ON c.CustomerID = s.CustomerID
+    
+    -- Filtramos para hacer la prueba solo con los primeros 5 clientes
+    WHERE c.CustomerID IN (1, 2, 3, 4, 5)
+)
+
+-- PASO 2: Consulta final que extrae solo el TOP 2 de cada cliente
+SELECT 
+    CustomerID,
+    CustomerName,
+    SaleID,
+    SaleDate,
+    Amount,
+    ranking_compra
+FROM RankedSales
+
+-- FILTRO DE NEGOCIO:
+-- Excluimos los puestos 3, 4, 5... Nos quedamos ÚNICAMENTE con los 2 primeros puestos
+WHERE ranking_compra <= 2
+
+-- ORDEN FINAL:
+-- Presentamos los resultados agrupados por cliente y de mayor a menor compra
+ORDER BY CustomerID, ranking_compra;
+
+
+-- ==============================================================================
+-- SECCIÓN 5: PATRÓN UPSERT ATÓMICO (MERGE / ON CONFLICT)
+-- ==============================================================================
+-- ¿QUÉ PROBLEMA DE NEGOCIO RESOLVEMOS?
+-- En cargas diarias (ETL / ELT), recibimos un lote con transacciones nuevas
+-- y transacciones existentes modificadas.
+-- Un Junior hace: UPDATE ... seguido de INSERT ... (doble escaneo y riesgo de deadlocks).
+-- Un Senior hace: Una sola sentencia atómica que actualiza si existe e inserta si no existe.
+-- ==============================================================================
+
+-- 5.1 Ejecutar el UPSERT atómico sobre FactSales
+INSERT INTO FactSales (
+    SaleID,
+    CustomerID,
+    SaleDate,
+    Category,
+    Amount,
+    Status,
+    RegionID
+)
+VALUES 
+    -- Fila 1: VENTA EXISTENTE (SaleID 1 ya existe -> Se debe actualizar)
+    (1, 1, '2026-10-19 12:00:00', 'Electronics', 3500.00, 'COMPLETED', 1),
+    
+    -- Fila 2: VENTA NUEVA (SaleID 999999 no existe -> Se debe insertar)
+    (999999, 50, '2026-10-19 12:00:00', 'Home', 450.00, 'COMPLETED', 2)
+
+-- LA CLÁUSULA DE RESOLUCIÓN ATÓMICA DE CONFLICTOS:
+ON CONFLICT(SaleID) DO UPDATE SET
+    Amount   = excluded.Amount,    -- "excluded" representa el nuevo dato que venía en el lote
+    Status   = excluded.Status,    -- Actualizamos el estado al nuevo valor
+    SaleDate = excluded.SaleDate;  -- Actualizamos la fecha de modificación
+
+-- 5.2 Comprobación de auditoría
+SELECT SaleID, CustomerID, SaleDate, Amount, Status 
+FROM FactSales 
+WHERE SaleID IN (1, 999999);
+
+
