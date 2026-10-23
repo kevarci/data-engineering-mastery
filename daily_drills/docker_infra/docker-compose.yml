@@ -1,0 +1,84 @@
+# ==============================================================================
+# Docker Compose: Arquitectura Multi-Contenedor para Data Engineering
+# Estudiante: Kevin Stick Arciniegas Marquez
+# Componentes: PostgreSQL 16 (Base de Datos) + Python 3.12 (Pipeline ETL)
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # SERVICIO 1: Base de Datos Relacional de Destino (PostgreSQL 16 Alpine)
+  # ----------------------------------------------------------------------------
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: mastery_postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mastery_dw
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    # Mapeo de puertos: 5433 en tu Windows host hacia 5432 dentro del contenedor.
+    # Usamos 5433 para evitar colisiones si tienes otro PostgreSQL instalado en tu máquina.
+    ports:
+      - "5433:5432"
+    # Persistencia de los datos relacionales: Si el contenedor se destruye,
+    # las tablas y registros no se pierden gracias al volumen nombrado.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # HEALTHCHECK SENIOR:
+    # Verifica cada 5 segundos si PostgreSQL ya arrancó y acepta conexiones reales.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mastery_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - dataops_network
+
+  # ----------------------------------------------------------------------------
+  # SERVICIO 2: Pipeline de Ingesta y Analítica (Python Containerizado)
+  # ----------------------------------------------------------------------------
+  dataops_pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mastery_dataops_pipeline
+    # CONTROL DE DEPENDENCIAS SENIOR:
+    # No basta con 'depends_on: [postgres_db]'.
+    # Usamos 'condition: service_healthy' para que el pipeline ESPERE a que
+    # PostgreSQL esté 100% listo para responder consultas antes de iniciar.
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    # Variables de entorno inyectadas:
+    # Observa que DB_HOST es 'postgres_db' (el nombre del servicio en la red de Docker)
+    environment:
+      DB_HOST: postgres_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: mastery_dw
+    # BIND MOUNT: Monta la carpeta local './data/output' del host en '/app/data/output'
+    # permitiendo que el reporte CSV generado por el pipeline quede en tu Windows.
+    volumes:
+      - ./data/output:/app/data/output
+    networks:
+      - dataops_network
+
+# ------------------------------------------------------------------------------
+# VOLÚMENES NOMBRADOS (Almacenamiento persistente desacoplado del ciclo de vida)
+# ------------------------------------------------------------------------------
+volumes:
+  postgres_data:
+    driver: local
+
+# ------------------------------------------------------------------------------
+# REDES VIRTUALES PRIVADAS (Bridge Network)
+# Crea un switch virtual y servidor DNS interno donde los contenedores
+# se comunican usando sus nombres de servicio (ej: 'postgres_db:5432')
+# ------------------------------------------------------------------------------
+networks:
+  dataops_network:
+    driver: bridge

@@ -134,10 +134,12 @@ mastery-lab/
 │   ├── README.md                       # Architecture diagram and step-by-step setup
 │   ├── docs/                           # Engineering Handbooks
 │   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Distributed Compute & Delta Lake
-│   │   └── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog & Athena
+│   │   ├── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog & Athena
+│   │   └── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
 │   ├── scripts/                        # Ingestion, validation & PySpark jobs
 │   │   ├── 01_medallion_lakehouse_pipeline.py # Local Databricks backup script
 │   │   ├── 02_athena_partition_simulator.py   # Athena & Partition Pruning Simulator
+│   │   ├── 03_pyspark_internals_and_joins.py  # Catalyst & Broadcast Joins Lab
 │   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
 │   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
 │   └── data/                           # Partitioned raw data layer (local dev)
@@ -152,8 +154,10 @@ mastery-lab/
     │   └── docs/                       # Bash & DataOps Handbook
     ├── docker_infra/                   # Containers for Data Engineering
     │   ├── docs/                       # Docker & DataOps Handbook
+    │   ├── docker-compose.yml          # Multi-container orchestration (Postgres 16 + Python 3.12)
     │   ├── Dockerfile                  # Production Python 3.12-slim image
-    │   └── scripts/                    # Containerized data pipeline runner
+    │   ├── requirements.txt            # Pipeline dependencies (psycopg2-binary)
+    │   └── scripts/                    # Containerized data pipeline runners
     └── sql_tuning/                     # SQL Server, PostgreSQL & SQLite Benchmarks
         ├── docs/                       # SQL Performance Tuning Handbook
         ├── 01_window_functions.sql     # Live-coding interview patterns

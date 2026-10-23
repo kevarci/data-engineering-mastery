@@ -134,9 +134,12 @@ mastery-lab/
 │   ├── README.md                       # Diagrama de arquitectura y guía paso a paso
 │   ├── docs/                           # Cuadernos de Cátedra
 │   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Cómputo Distribuido y Delta Lake
-│   │   └── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog y Athena
+│   │   ├── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog y Athena
+│   │   └── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
 │   ├── scripts/                        # Ingesta, validación y jobs de PySpark
 │   │   ├── 01_medallion_lakehouse_pipeline.py # Script respaldado de Databricks
+│   │   ├── 02_athena_partition_simulator.py   # Simulador de Athena y Partition Pruning
+│   │   ├── 03_pyspark_internals_and_joins.py  # Laboratorio de Catalyst y Broadcast Joins
 │   │   ├── generate_sample_dataset.py  # Generador de dataset Parquet particionado
 │   │   └── sync_bronze_lakehouse.sh    # Script de automatización en Bash
 │   └── data/                           # Capa de datos crudos locales (ignorado en Git)
@@ -150,8 +153,10 @@ mastery-lab/
     ├── bash_scripting/
     ├── docker_infra/                   # Contenedores para Data Engineering
     │   ├── docs/                       # Cuaderno de Cátedra de Docker & DataOps
+    │   ├── docker-compose.yml          # Orquestación multi-contenedor (Postgres 16 + Python 3.12)
     │   ├── Dockerfile                  # Imagen Python 3.12-slim optimizada
-    │   └── scripts/                    # Pipeline de datos containerizado
+    │   ├── requirements.txt            # Dependencias del pipeline (psycopg2-binary)
+    │   └── scripts/                    # Pipelines containerizados (individual y compose)
     └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y SQLite
         ├── docs/                       # Cuaderno de Cátedra de SQL Performance Tuning
         ├── 01_window_functions.sql     # Patrones frecuentes de entrevistas técnicas

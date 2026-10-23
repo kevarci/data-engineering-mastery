@@ -13,7 +13,8 @@
 3. [Estrategias de Índices: Key Lookup, INCLUDE e Índices Filtrados](#3-estrategias-de-índices-key-lookup-include-e-índices-filtrados)
 4. [T-SQL Internals: CROSS APPLY, Tablas Temporales y Transacciones](#4-t-sql-internals-cross-apply-tablas-temporales-y-transacciones)
 5. [Funciones de Ventana de Alto Rendimiento (Window Functions)](#5-funciones-de-ventana-de-alto-rendimiento)
-6. [Simulador de Preguntas Trampa de Entrevistas](#6-simulador-de-preguntas-trampa-de-entrevistas)
+6. [Los 3 Algoritmos Físicos de JOIN y Spills a TempDB](#6-los-3-algoritmos-físicos-de-join-y-spills-a-tempdb)
+7. [Simulador de Preguntas Trampa de Entrevistas](#7-simulador-de-preguntas-trampa-de-entrevistas)
 
 ---
 
@@ -590,7 +591,53 @@ ORDER BY cuartil;
 
 ---
 
-## 6. Simulador de Preguntas Trampa de Entrevistas
+## 6. Los 3 Algoritmos Físicos de JOIN y Spills a TempDB
+
+En SQL lógico simplemente escribimos `JOIN ... ON ...`. Pero en el motor físico (SQL Server, PostgreSQL, Snowflake, Oracle, SQLite), el **Optimizador de Consultas basado en Costos (CBO)** debe elegir uno de 3 algoritmos físicos para procesar los datos:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│             COMPARATIVA DE ALGORITMOS FÍSICOS DE JOIN EN MOTORES RELACIONALES          │
+├───────────────────┬──────────────┬────────────────────────────┬────────────────────────┤
+│ ALGORITMO         │ COMPLEJIDAD  │ MEJOR CASO                 │ PEOR CASO (PELIGRO)    │
+├───────────────────┼──────────────┼────────────────────────────┼────────────────────────┤
+│ Nested Loops Join │ O(M * log N) │ Tabla exterior pequeña +   │ Tabla interior grande  │
+│                   │              │ índice en tabla interior   │ sin índices (O(M * N)) │
+├───────────────────┼──────────────┼────────────────────────────┼────────────────────────┤
+│ Merge Join        │ O(M + N)     │ Ambas tablas ordenadas     │ Requiere un operador   │
+│                   │              │ previamente por la clave   │ SORT previo en memoria │
+├───────────────────┼──────────────┼────────────────────────────┼────────────────────────┤
+│ Hash Match Join   │ O(M + N)     │ Tablas grandes sin ordenar │ MEMORY SPILL a TempDB  │
+│                   │              │ ni índices (Data Warehouse)│ si falta RAM (E/S disco│
+└───────────────────┴──────────────┴────────────────────────────┴────────────────────────┤
+```
+
+### A. Nested Loops Join (Bucle Anidado)
+* **Mecánica:** Funciona como un `for` anidado en programación. Para cada fila de la tabla exterior (*Driving Table*), el motor ejecuta una búsqueda binaria (*Index Seek*) en el árbol B-Tree de la tabla interior.
+* **Cuándo se elige:** Cuando una de las tablas tiene pocas filas (después de aplicar el `WHERE`) y la otra tabla tiene un índice sobre la clave de unión.
+* **Diagnóstico en DBeaver:**
+  ```text
+  SCAN c
+  SEARCH s USING INDEX IX_FactSales_Customer_Date (CustomerID=?)
+  ```
+
+### B. Merge Join (Unión por Fusión)
+* **Mecánica:** Similar a cómo se unen dos listas ordenadas en Merge Sort (efecto cremallera / zipper). Dos punteros avanzan simultáneamente de arriba hacia abajo sin retroceder.
+* **Cuándo se elige:** Cuando ambas tablas **ya están físicamente ordenadas** por la clave de JOIN (por ejemplo, mediante un *Clustered Index* o la salida de un índice ordenado). Es extremadamente veloz y requiere casi cero memoria de trabajo.
+
+### C. Hash Match / Hash Join (Unión por Tabla Hash)
+* **Mecánica en 2 Fases:**
+  1. **Fase de Construcción (Build Phase):** Toma la tabla más pequeña (estimada por las estadísticas), calcula un hash de la clave de join y crea una tabla hash en la memoria RAM (*Memory Grant*).
+  2. **Fase de Sondeo (Probe Phase):** Lee la tabla grande secuencialmente, calcula el hash de su clave y busca de inmediato en la tabla hash en memoria.
+* **El Peligro Crítico: Hash Spill a TempDB / Workfile Spill:**
+  - Cuando el optimizador estima mal el volumen de datos (porque las estadísticas están obsoletas, *Stale Statistics*), asigna un **Memory Grant** insuficiente (ej. 20 MB).
+  - Al ejecutar la consulta, la tabla hash requiere 500 MB.
+  - Al quedarse sin RAM, el motor se desborda y comienza a escribir y leer páginas en el disco temporal (**TempDB** en SQL Server o `/tmp` en PostgreSQL).
+  - **Impacto en producción:** El tiempo de ejecución se degrada de 1.5 segundos a 15 minutos, disparando el I/O del disco y congelando el servidor.
+
+---
+
+## 7. Simulador de Preguntas Trampa de Entrevistas
 
 ### P1: *"¿Por qué no creamos un índice sobre cada columna de la tabla para acelerar todas las consultas?"*
 > **Respuesta Senior:**  
@@ -617,5 +664,19 @@ ORDER BY cuartil;
 > 2. **Condiciones de Carrera (*Race Conditions*):** Si otro proceso escribe en la tabla entre el UPDATE y el INSERT, se pueden generar violaciones de clave primaria o inconsistencias graves.  
 > 3. **Bloqueos (*Deadlocks*):** Adquiere dos bloqueos de escritura separados sobre la tabla, aumentando el riesgo de congelar transacciones concurrentes.  
 > Se soluciona utilizando una sentencia atómica única en un solo pase de disco: `MERGE INTO` (en T-SQL, Delta Lake y Snowflake) o `INSERT INTO ... ON CONFLICT (...) DO UPDATE` (en PostgreSQL y SQLite).
+
+### P6: *"¿Cuándo elige el optimizador un Hash Match Join en lugar de un Merge Join o Nested Loops, y cuál es el mayor peligro en producción?"*
+> **Respuesta Senior:**  
+> El optimizador elige un **Hash Match Join** cuando une dos conjuntos de datos medianos o grandes donde las columnas de unión **no están indexadas ni ordenadas físicamente**.  
+> El peligro mortal en producción es el **Hash Spill a TempDB / Workfile Spill**. Si las estadísticas del catálogo están obsoletas (*Stale Statistics*), el motor subestima la cantidad de filas y le otorga una concesión de memoria RAM (*Memory Grant*) diminuta. Al desbordarse la tabla hash en la fase de construcción (*Build Phase*), el motor vuelca los datos a disco en TempDB, degradando la consulta de milisegundos a minutos y saturando el subsistema de almacenamiento del servidor.
+
+### P7: *"¿Cómo se diagnostica y resuelve un Spill a TempDB en un entorno de producción?"*
+> **Respuesta Senior:**  
+> 1. **Diagnóstico:** En el Plan de Ejecución Gráfico aparece un ícono de advertencia amarillo (**Warning: Operator used TempDB to spill data during execution with spill level 1/2**) en operadores de `Sort` o `Hash Match`. En Extended Events o Profiler se monitorean los eventos `Sort Warnings` o `Hash Warning`.  
+> 2. **Causa Raíz:** Casi siempre se debe a una discrepancia severa entre *Estimated Number of Rows* (ej. 1,000) y *Actual Number of Rows* (ej. 2,000,000), provocada por estadísticas desactualizadas o variables locales que impiden la estimación de parámetros (*Parameter Sniffing*).  
+> 3. **Resolución:**  
+>    - Actualizar estadísticas: `UPDATE STATISTICS FactSales WITH FULLSCAN;`  
+>    - Si falta un índice, crear un índice que proporcione los datos pre-ordenados para habilitar un **Merge Join** o un **Index Seek**.  
+>    - Como parche de emergencia controlado, ajustar el Memory Grant mediante hints (`OPTION (MIN_GRANT_PERCENT = 20)`).
 
 

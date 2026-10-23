@@ -1,0 +1,2 @@
+# Dependencias para el pipeline de datos containerizado
+psycopg2-binary==2.9.9

@@ -240,3 +240,75 @@ FROM FactSales
 WHERE SaleID IN (1, 999999);
 
 
+-- ==============================================================================
+-- SECCIÓN 6: ALGORITMOS FÍSICOS DE JOIN Y AFINAMIENTO DE PLANES COMPLEJOS
+-- ==============================================================================
+-- ¿QUÉ PROBLEMA DE NEGOCIO Y PERFORMANCE ESTUDIAMOS?
+-- Cuando hacemos JOIN entre dos tablas, el motor relacional no hace magia.
+-- Debe elegir uno de 3 algoritmos físicos:
+-- 1. Nested Loops Join: Ideal para tabla exterior pequeña + índice en tabla interior.
+-- 2. Merge Join: Ideal para tablas masivas ya ordenadas físicamente (Clustered Index).
+-- 3. Hash Match / Hash Join: Ideal para tablas no ordenadas ni indexadas (Build + Probe).
+--
+-- OBJETIVO DEL LABORATORIO INTERACTIVO:
+-- Diagnosticar el plan de ejecución de un JOIN entre DimCustomer (5,000 filas)
+-- y FactSales (120,000 filas), identificar el escaneo de tabla y optimizarlo con un índice.
+-- ==============================================================================
+
+-- 6.1 CONSULTA DE NEGOCIO: Top 10 Clientes de 'US' por volumen total de compras
+-- Ejecuta primero con EXPLAIN QUERY PLAN para ver el plan antes del índice:
+EXPLAIN QUERY PLAN
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    COUNT(s.SaleID) AS total_pedidos,
+    ROUND(SUM(s.Amount), 2) AS volumen_total
+FROM DimCustomer c
+JOIN FactSales s ON c.CustomerID = s.CustomerID
+WHERE c.Country = 'US'
+GROUP BY c.CustomerID, c.CustomerName
+ORDER BY volumen_total DESC
+LIMIT 10;
+
+-- 6.2 DIAGNÓSTICO DEL PLAN ORIGINAL:
+-- 1. SCAN c -> Escaneo completo de DimCustomer porque NO hay índice en Country (O(N)).
+-- 2. SEARCH s USING INDEX IX_FactSales_Customer_Date (CustomerID=?) -> Nested Loops Join.
+--    El motor usa cada cliente encontrado en c para saltar por el B-Tree de FactSales.
+-- 3. USE TEMP B-TREE FOR ORDER BY -> Ordenamiento en memoria temporal porque el total
+--    agregado SUM(Amount) se calcula en el momento.
+
+-- 6.3 ACCIÓN DE TUNING SENIOR:
+-- Creamos un índice secundario sobre la columna de filtro 'Country' en DimCustomer
+CREATE INDEX IF NOT EXISTS IX_DimCustomer_Country ON DimCustomer(Country);
+
+-- 6.4 VERIFICACIÓN DEL NUEVO PLAN TRAS LA OPTIMIZACIÓN:
+-- Vuelve a ejecutar esta consulta y observa cómo 'SCAN c' se convierte en 'SEARCH c USING INDEX':
+EXPLAIN QUERY PLAN
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    COUNT(s.SaleID) AS total_pedidos,
+    ROUND(SUM(s.Amount), 2) AS volumen_total
+FROM DimCustomer c
+JOIN FactSales s ON c.CustomerID = s.CustomerID
+WHERE c.Country = 'US'
+GROUP BY c.CustomerID, c.CustomerName
+ORDER BY volumen_total DESC
+LIMIT 10;
+
+-- 6.5 CONSULTA REAL EN PRODUCCIÓN (Ver los 10 mejores clientes de US):
+SELECT 
+    c.CustomerID,
+    c.CustomerName,
+    COUNT(s.SaleID) AS total_pedidos,
+    ROUND(SUM(s.Amount), 2) AS volumen_total
+FROM DimCustomer c
+JOIN FactSales s ON c.CustomerID = s.CustomerID
+WHERE c.Country = 'US'
+GROUP BY c.CustomerID, c.CustomerName
+ORDER BY volumen_total DESC
+LIMIT 10;
+
+
+
+

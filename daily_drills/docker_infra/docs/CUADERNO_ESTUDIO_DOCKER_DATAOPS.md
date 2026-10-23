@@ -15,7 +15,10 @@
 4. [Persistencia de Datos: El Almacenamiento Efímero vs Docker Volumes](#4-persistencia-de-datos-almacenamiento-efímero-vs-docker-volumes)
 5. [Buenas Prácticas para Dockerfiles de Producción](#5-buenas-prácticas-para-dockerfiles-de-producción)
 6. [Laboratorio Práctico: Pipeline de Datos Containerizado con Volumen](#6-laboratorio-práctico-pipeline-containerizado)
-7. [Simulador de Preguntas Trampa de Entrevistas](#7-simulador-de-preguntas-trampa-de-entrevistas)
+7. [Orquestación Multi-Contenedor con Docker Compose](#7-orquestación-multi-contenedor-con-docker-compose)
+8. [Redes Virtuales Privadas (Bridge) y DNS Interno en Docker](#8-redes-virtuales-privadas-bridge-y-dns-interno-en-docker)
+9. [Resiliencia con Healthchecks y Dependencias de Servicio](#9-resiliencia-con-healthchecks-y-dependencias-de-servicio)
+10. [Simulador de Preguntas Trampa de Entrevistas](#10-simulador-de-preguntas-trampa-de-entrevistas)
 
 ---
 
@@ -145,7 +148,80 @@ ENTRYPOINT ["python", "/app/scripts/pipeline_runner.py"]
 
 ---
 
-## 7. Simulador de Preguntas Trampa de Entrevistas
+## 7. Orquestación Multi-Contenedor con Docker Compose
+
+En entornos corporativos reales, un pipeline de datos rara vez se ejecuta en el vacío. Requiere interactuar con múltiples servicios simultáneos:
+1. **Bases de datos transaccionales (OLTP / Data Warehouses):** PostgreSQL, MySQL, SQL Server, ClickHouse.
+2. **Colas de mensajería y caché:** Redis, Apache Kafka, RabbitMQ.
+3. **Orquestadores:** Apache Airflow (Scheduler, Webserver, Triggerer, Metastore).
+
+Levantar 4 o 5 contenedores manualmente con comandos `docker run` individuales es propenso a errores humanos, inviable en CI/CD y desordenado.
+
+**Docker Compose** es la herramienta de infraestructura como código (IaC) que permite definir, orquestar y levantar toda la topología de servicios con un único comando:
+```bash
+docker compose up --build -d
+```
+
+---
+
+## 8. Redes Virtuales Privadas (Bridge) y DNS Interno en Docker
+
+### El Error Fatal del Desarrollador Junior:
+Cuando un desarrollador junior levanta un contenedor con una base de datos PostgreSQL y otro con su script de Python, escribe en su código:
+```python
+# ❌ ERROR JUNIOR: Falla con ConnectionRefusedError
+conn = psycopg2.connect(host="localhost", port=5432, ...)
+```
+
+#### ¿Por qué falla?
+Dentro de un contenedor, `localhost` (la dirección `127.0.0.1`) se refiere al **propio contenedor**, no a tu máquina host ni a otros contenedores. Como la base de datos corre en su propio contenedor aislado, el pipeline intenta conectarse a sí mismo y colapsa.
+
+### La Solución Senior: Redes Virtuales (Bridge Network) y DNS Automático
+Al declarar una red en `docker-compose.yml`:
+```yaml
+networks:
+  dataops_network:
+    driver: bridge
+```
+Docker crea un switch virtual privado y activa un **servidor DNS interno integrado**. 
+Cualquier contenedor conectado a esa red puede resolver y comunicarse con otro contenedor utilizando directamente el **nombre del servicio** como hostname:
+```python
+# ✅ SOLUCIÓN SENIOR: Resuelto por el DNS interno de Docker
+conn = psycopg2.connect(host="postgres_db", port=5432, ...)
+```
+
+---
+
+## 9. Resiliencia con Healthchecks y Dependencias de Servicio
+
+### El Problema de la Condición de Carrera (*Race Condition*):
+Si configuras simplemente `depends_on: [postgres_db]`, Docker Compose inicia el contenedor de la base de datos y milisegundos después inicia el pipeline de Python.
+
+Sin embargo, aunque el contenedor de PostgreSQL esté "corriendo", el proceso del motor necesita entre 5 y 10 segundos para inicializar los catálogos en disco, cargar extensiones y abrir el socket de red en el puerto 5432.
+El script de Python intenta conectarse en el segundo 1 y colapsa con `OperationalError: could not connect to server`.
+
+### La Solución Senior: `condition: service_healthy`
+Un Ingeniero Senior implementa un **Healthcheck nativo** en el servicio de la base de datos y condiciona el arranque del pipeline a que ese chequeo sea exitoso:
+
+```yaml
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mastery_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  dataops_pipeline:
+    depends_on:
+      postgres_db:
+        condition: service_healthy # Espera hasta que pg_isready responda OK
+```
+
+---
+
+## 10. Simulador de Preguntas Trampa de Entrevistas
 
 ### P1: "¿Qué sucede con los datos de un pipeline si el contenedor de Docker colapsa por Out Of Memory (OOM)?"
 > **Respuesta Senior:**  
@@ -163,3 +239,13 @@ ENTRYPOINT ["python", "/app/scripts/pipeline_runner.py"]
 ### P4: "¿Qué ventajas tiene usar `python:3.12-slim` sobre la imagen oficial completa `python:3.12`?"
 > **Respuesta Senior:**  
 > La imagen completa pesa cerca de 1 GB porque incluye compiladores C++, utilidades de desarrollo y herramientas de depuración que no se necesitan en tiempo de ejecución. La variante `-slim` pesa alrededor de 150 MB, lo que reduce el tiempo de descarga por red en clústeres de Kubernetes/ECS, minimiza el consumo de disco y reduce drásticamente las vulnerabilidades de seguridad (*CVEs*) al eliminar paquetes superfluos.
+
+### P5: "¿Por qué `depends_on` en Docker Compose no garantiza por sí solo que tu script de Python pueda conectarse a la base de datos?"
+> **Respuesta Senior:**  
+> Porque por defecto `depends_on` solo espera a que el contenedor de la base de datos alcance el estado *running* a nivel de proceso del sistema operativo. No espera a que el servicio interno (PostgreSQL o MySQL) complete su inicialización, lea los catálogos y esté escuchando en el puerto TCP.  
+> Para garantizar que la base de datos esté lista para aceptar conexiones reales, se debe definir un bloque `healthcheck` (por ejemplo usando `pg_isready`) y declarar en el servicio consumidor `depends_on: { service_name: { condition: service_healthy } }`.
+
+### P6: "¿Cómo se comunican dos contenedores en Docker Compose sin exponer puertos hacia la máquina host?"
+> **Respuesta Senior:**  
+> A través de la **Docker Bridge Network** que Compose crea automáticamente. Docker levanta un switch virtual privado y un servidor DNS interno embebido. Cualquier contenedor en esa red puede conectarse a otro usando su nombre de servicio como hostname (ej. `postgres_db:5432`).  
+> La directiva `ports:` (puertos mapeados hacia el host) solo es necesaria si una aplicación externa en el host (como DBeaver o Power BI) necesita ingresar; la comunicación entre contenedores dentro de la red virtual es completamente interna y segura sin necesidad de mapeo de puertos públicos.
