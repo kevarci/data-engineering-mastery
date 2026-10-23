@@ -32,7 +32,7 @@
 </div>
 
 <p align="center">
-  <img src="assets/architecture_overview.svg" alt="Lakehouse Architecture and DataOps Platform" width="100%" />
+  <img src="assets/architecture_overview_en.svg" alt="Lakehouse Architecture and DataOps Platform" width="100%" />
 </p>
 
 ## 📌 Executive Summary

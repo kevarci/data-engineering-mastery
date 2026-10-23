@@ -44,11 +44,7 @@
       <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.5" />
     </filter>
 
-    <filter id="accentGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#38bdf8" flood-opacity="0.4" />
-    </filter>
-
-    <!-- Arrow Marker -->
+    <!-- Arrow Markers -->
     <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 1 L 8 5 L 0 9 z" fill="#38bdf8" />
     </marker>
@@ -88,21 +84,21 @@
   </g>
 
   <!-- ========================================================================= -->
-  <!-- HEADER SECTION                                                            -->
+  <!-- HEADER SECTION (ENGLISH)                                                  -->
   <!-- ========================================================================= -->
   <g transform="translate(50, 40)">
     <!-- Badge -->
-    <rect x="0" y="0" width="130" height="24" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="1" />
+    <rect x="0" y="0" width="160" height="24" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="1" />
     <circle cx="12" cy="12" r="4" fill="#38bdf8" />
     <text x="24" y="16" class="tag-text" fill="#38bdf8">SPRINT 1 ARCHITECTURE</text>
 
     <!-- Main Title -->
     <text x="0" y="52" class="title" font-size="24">Serverless Lakehouse &amp; Production DataOps Platform</text>
-    <text x="0" y="74" class="subtitle">AWS Cloud Foundation • PySpark Catalyst Internals • Delta Lake ACID • Docker Compose Orchestration</text>
+    <text x="0" y="74" class="subtitle">AWS Cloud Foundations • PySpark Catalyst Internals • Delta Lake ACID • Docker Compose Orchestration</text>
   </g>
 
   <!-- ========================================================================= -->
-  <!-- STAGE 1: INGESTION & DATA GENERATION                                      -->
+  <!-- STAGE 1: INGESTION & LOCAL AUTOMATION                                     -->
   <!-- ========================================================================= -->
   <g transform="translate(50, 145)" filter="url(#cardShadow)">
     <rect width="240" height="320" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
@@ -132,7 +128,7 @@
       <rect width="210" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#f8fafc">Defensive Bash Sync</text>
       <text x="12" y="42" class="code-text">set -euo pipefail</text>
-      <text x="12" y="58" class="subtitle" font-size="10">Idempotent aws s3 sync + dryrun</text>
+      <text x="12" y="58" class="subtitle" font-size="10">Idempotent aws s3 sync + dryrun checks</text>
     </g>
   </g>
 
@@ -140,7 +136,7 @@
   <path d="M 290 300 L 330 300" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrow)" />
 
   <!-- ========================================================================= -->
-  <!-- STAGE 2: AWS CLOUD STORAGE & CATALOG                                      -->
+  <!-- STAGE 2: AWS STORAGE & METADATA CATALOG                                   -->
   <!-- ========================================================================= -->
   <g transform="translate(340, 145)" filter="url(#cardShadow)">
     <rect width="240" height="320" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
@@ -161,7 +157,7 @@
     <g transform="translate(15, 148)">
       <rect width="210" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#ff9900">AWS Glue Data Catalog</text>
-      <text x="12" y="42" class="code-text">Database: db_mastery_lakehouse</text>
+      <text x="12" y="42" class="code-text">db_mastery_lakehouse</text>
       <text x="12" y="58" class="subtitle" font-size="10">Automated Schema Discovery</text>
     </g>
 
@@ -170,7 +166,7 @@
       <rect width="210" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#ff9900">Partition Projection</text>
       <text x="12" y="42" class="code-text">projection.enabled = true</text>
-      <text x="12" y="58" class="subtitle" font-size="10">Zero-metadata crawler queries</text>
+      <text x="12" y="58" class="subtitle" font-size="10">Zero-crawler metadata queries</text>
     </g>
   </g>
 
@@ -200,15 +196,15 @@
       <rect width="220" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#ff3621">Broadcast &amp; Salting</text>
       <text x="12" y="42" class="code-text">broadcast(dim_df)</text>
-      <text x="12" y="58" class="subtitle" font-size="10">Mitigates Skew &amp; Network Bottlenecks</text>
+      <text x="12" y="58" class="subtitle" font-size="10">Mitigates Data Skew &amp; Network Latency</text>
     </g>
 
     <!-- Box 3.3 -->
     <g transform="translate(15, 230)">
       <rect width="220" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
-      <text x="12" y="24" class="item-text" font-weight="700" fill="#10b981">Delta Lake ACID (Gold)</text>
+      <text x="12" y="24" class="item-text" font-weight="700" fill="#10b981">Delta Lake ACID (Gold Layer)</text>
       <text x="12" y="42" class="code-text">MERGE INTO &amp; Time Travel</text>
-      <text x="12" y="58" class="subtitle" font-size="10">Idempotent Upserts + Z-Order Opt</text>
+      <text x="12" y="58" class="subtitle" font-size="10">Idempotent Upserts + Z-Order Compaction</text>
     </g>
   </g>
 
@@ -216,7 +212,7 @@
   <path d="M 880 300 L 920 300" stroke="#10b981" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrowGreen)" />
 
   <!-- ========================================================================= -->
-  <!-- STAGE 4: SERVERLESS SERVING & ATHENA                                      -->
+  <!-- STAGE 4: SERVERLESS QUERY SERVING                                         -->
   <!-- ========================================================================= -->
   <g transform="translate(930, 145)" filter="url(#cardShadow)">
     <rect width="220" height="320" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
@@ -230,7 +226,7 @@
       <rect width="190" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#a855f7">Amazon Athena (Trino)</text>
       <text x="12" y="42" class="code-text">Serverless ANSI SQL</text>
-      <text x="12" y="58" class="subtitle" font-size="10">No clusters to manage or pay idle</text>
+      <text x="12" y="58" class="subtitle" font-size="10">No clusters to manage or pay idle costs</text>
     </g>
 
     <!-- Box 4.2 -->
@@ -238,14 +234,14 @@
       <rect width="190" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="24" class="item-text" font-weight="700" fill="#38bdf8">Partition Pruning</text>
       <text x="12" y="42" class="code-text">99.4% Scanned Saved</text>
-      <text x="12" y="58" class="subtitle" font-size="10">2.6 MB vs 420 MB full scan</text>
+      <text x="12" y="58" class="subtitle" font-size="10">2.6 MB read vs 420 MB full table scan</text>
     </g>
 
     <!-- Box 4.3 -->
     <g transform="translate(15, 230)">
       <rect width="190" height="72" rx="8" fill="#0f172a" stroke="#1e293b" />
-      <text x="12" y="24" class="item-text" font-weight="700" fill="#f8fafc">BI &amp; Power BI Access</text>
-      <text x="12" y="42" class="code-text">DirectQuery / JDBC</text>
+      <text x="12" y="24" class="item-text" font-weight="700" fill="#f8fafc">BI &amp; Analytics Access</text>
+      <text x="12" y="42" class="code-text">DirectQuery / JDBC Connector</text>
       <text x="12" y="58" class="subtitle" font-size="10">Gold Marts &amp; Executive KPIs</text>
     </g>
   </g>
@@ -260,23 +256,23 @@
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
     <text x="25" y="30" class="card-title">⚡ HARD DRILL: SQL ENGINE INTERNALS &amp; TUNING</text>
-    <text x="25" y="46" class="card-subtitle">Planes de Ejecución en 120,000+ filas • DBeaver • SQLite &amp; T-SQL</text>
+    <text x="25" y="46" class="card-subtitle">Execution Plans on 120,000+ rows • DBeaver • SQLite &amp; T-SQL</text>
 
     <!-- Sub-boxes -->
     <g transform="translate(20, 60)">
       <rect width="235" height="95" rx="8" fill="#0f172a" stroke="#1e293b" />
       <text x="12" y="22" class="item-text" font-weight="700" fill="#38bdf8">Index Seek vs. Table Scan</text>
       <text x="12" y="42" class="subtitle" font-size="11">SCAN (120k rows) → SEARCH B-Tree</text>
-      <text x="12" y="60" class="code-text">O(N) Lineal → O(log N) Logarítmico</text>
-      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">Índices cubrientes (INCLUDE) &amp; Filtrados</text>
+      <text x="12" y="60" class="code-text">O(N) Linear → O(log N) Logarithmic</text>
+      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">Covering (INCLUDE) &amp; Filtered Indexes</text>
     </g>
 
     <g transform="translate(275, 60)">
       <rect width="235" height="95" rx="8" fill="#0f172a" stroke="#1e293b" />
-      <text x="12" y="22" class="item-text" font-weight="700" fill="#f59e0b">Join Físico &amp; TempDB Spills</text>
+      <text x="12" y="22" class="item-text" font-weight="700" fill="#f59e0b">Physical Joins &amp; TempDB Spills</text>
       <text x="12" y="42" class="subtitle" font-size="11">Nested Loops vs Merge vs Hash Match</text>
       <text x="12" y="60" class="code-text">Memory Grant Overflow Prevention</text>
-      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">DENSE_RANK() &amp; Upsert (ON CONFLICT)</text>
+      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">DENSE_RANK() &amp; Atomic Upserts (ON CONFLICT)</text>
     </g>
   </g>
 
@@ -286,23 +282,23 @@
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
     <text x="25" y="30" class="card-title">🐳 HARD DRILL: MULTI-CONTAINER DATAOPS (COMPOSE)</text>
-    <text x="25" y="46" class="card-subtitle">Arquitectura Aislada en Red Bridge • Healthchecks • Persistencia Host</text>
+    <text x="25" y="46" class="card-subtitle">Isolated Bridge Network • Healthchecks • Host Persistence</text>
 
     <!-- Sub-boxes -->
     <g transform="translate(20, 60)">
       <rect width="235" height="95" rx="8" fill="#0f172a" stroke="#1e293b" />
-      <text x="12" y="22" class="item-text" font-weight="700" fill="#0ea5e9">Red Virtual &amp; DNS Interno</text>
-      <text x="12" y="42" class="subtitle" font-size="11">Zero localhost • Switch Virtual Bridge</text>
+      <text x="12" y="22" class="item-text" font-weight="700" fill="#0ea5e9">Virtual Network &amp; Internal DNS</text>
+      <text x="12" y="42" class="subtitle" font-size="11">Zero localhost • Bridge Virtual Switch</text>
       <text x="12" y="60" class="code-text">host: postgres_db:5432</text>
       <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">PostgreSQL 16 Alpine + Python 3.12</text>
     </g>
 
     <g transform="translate(275, 60)">
       <rect width="235" height="95" rx="8" fill="#0f172a" stroke="#1e293b" />
-      <text x="12" y="22" class="item-text" font-weight="700" fill="#10b981">Resiliencia &amp; Bind Mounts</text>
+      <text x="12" y="22" class="item-text" font-weight="700" fill="#10b981">Resilience &amp; Bind Mounts</text>
       <text x="12" y="42" class="subtitle" font-size="11">condition: service_healthy (pg_isready)</text>
       <text x="12" y="60" class="code-text">./data/output:/app/data/output</text>
-      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">Cero race condition • Persistencia en Windows</text>
+      <text x="12" y="80" class="subtitle" font-size="10" fill="#94a3b8">Zero race conditions • Output saved to Windows</text>
     </g>
   </g>
 

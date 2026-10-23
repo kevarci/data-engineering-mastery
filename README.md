@@ -32,7 +32,7 @@
 </div>
 
 <p align="center">
-  <img src="assets/architecture_overview.svg" alt="Arquitectura del Lakehouse y Plataforma DataOps" width="100%" />
+  <img src="assets/architecture_overview_es.svg" alt="Arquitectura del Lakehouse y Plataforma DataOps" width="100%" />
 </p>
 
 ## 📌 Resumen Ejecutivo
