@@ -31,6 +31,10 @@
 
 </div>
 
+<p align="center">
+  <img src="assets/architecture_overview.svg" alt="Arquitectura del Lakehouse y Plataforma DataOps" width="100%" />
+</p>
+
 ## 📌 Resumen Ejecutivo
 
 Este repositorio es un monorepo de nivel productivo que contiene arquitecturas de datos de punta a punta diseñadas para soportar cargas analíticas masivas, transformaciones distribuidas, orquestación tolerante a fallos y optimización profunda de motores relacionales.
@@ -41,18 +45,39 @@ Este repositorio es un monorepo de nivel productivo que contiene arquitecturas d
 
 ---
 
+## ⚡ Guía de Ejecución Rápida en 3 Pasos (Quickstart)
+
+Cualquier Tech Lead o reclutador técnico puede clonar este repositorio y reproducir los benchmarks en su máquina local en menos de 10 segundos:
+
+```bash
+# 1. Clonar el repositorio e ingresar al laboratorio
+git clone https://github.com/kevarci/data-engineering-mastery.git
+cd data-engineering-mastery
+
+# 2. Generar el dataset particionado en Parquet (100,000+ transacciones sintéticas)
+python sprint_01_aws_lakehouse/scripts/generate_sample_dataset.py
+
+# 3. Ejecutar el simulador de Amazon Athena y comprobar la reducción del 99.4% en escaneo de datos
+python sprint_01_aws_lakehouse/scripts/02_athena_partition_simulator.py
+
+# 🚀 BONUS DATAOPS: Levantar la arquitectura multi-contenedor con PostgreSQL 16 y Python 3.12
+cd daily_drills/docker_infra && docker compose up --build
+```
+
+---
+
 ## 🚀 Tablero de Entregas & Hoja de Ruta
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │  ESTADO GENERAL DEL PROYECTO                                                           │
-│  [■■■■■■■■■■■■■■□□□□□□] 70% Entregables de Sprint 1 Completados                        │
+│  [■■■■■■■■■■■■■■■■■□□□] 85% Entregables de Sprint 1 Completados                        │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 | Fase / Hito | Arquitectura & Alcance | Stack Principal | Estado |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (70% Completado)** |
+| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (85% Completado)** |
 | **Sprint 2: DataOps & Orquestación** | Pipeline ELT corporativo en Docker. Ingesta relacional desde SQL Server, DAGs modulares con TaskFlow API, modelado dimensional Kimball con dbt Core y contratos de datos automáticos. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planificado |
 | **Sprint 3: MLOps & Servicio de GenAI** | Microservicio de inferencia de alto rendimiento con FastAPI, tracking de experimentos en MLflow, imágenes Docker multi-stage y recuperación semántica RAG con base de datos vectorial. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planificado |
 
