@@ -62,5 +62,6 @@
 * 📘 [NOTAS_CLASE_DATABRICKS.md](docs/NOTAS_CLASE_DATABRICKS.md) - Cómputo Distribuido con PySpark, Databricks y Delta Lake (ACID, Z-Order & Time Travel).
 * 📙 [CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md](docs/CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md) - Arquitectura Serverless en AWS: Layout S3 Hive-Style, Glue Data Catalog, Crawlers y Partition Pruning en Athena.
 * 📕 [CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md](docs/CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md) - PySpark Internals: Optimizador Catalyst, Anatomía del Shuffle, Broadcast Hash Joins y Mitigación de Data Skew (Salting).
+* 📗 [CUADERNO_ESTUDIO_PYSPARK_WINDOW_FUNCTIONS.md](docs/CUADERNO_ESTUDIO_PYSPARK_WINDOW_FUNCTIONS.md) - Window Functions Distribuidas: Top N, Análisis Temporal con LAG/LEAD, Running Totals (rowsBetween) y Deduplicación Idempotente.
 
 

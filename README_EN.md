@@ -160,11 +160,13 @@ mastery-lab/
 │   ├── docs/                           # Engineering Handbooks
 │   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Distributed Compute & Delta Lake
 │   │   ├── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog & Athena
-│   │   └── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
+│   │   ├── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
+│   │   └── CUADERNO_ESTUDIO_PYSPARK_WINDOW_FUNCTIONS.md # Distributed Window Functions & Shuffle
 │   ├── scripts/                        # Ingestion, validation & PySpark jobs
 │   │   ├── 01_medallion_lakehouse_pipeline.py # Local Databricks backup script
 │   │   ├── 02_athena_partition_simulator.py   # Athena & Partition Pruning Simulator
 │   │   ├── 03_pyspark_internals_and_joins.py  # Catalyst & Broadcast Joins Lab
+│   │   ├── 04_pyspark_distributed_window_functions.py # Top N, LAG/LEAD & Running Totals
 │   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
 │   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
 │   └── data/                           # Partitioned raw data layer (local dev)
