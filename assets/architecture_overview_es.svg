@@ -255,7 +255,7 @@
     <rect width="530" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
-    <text x="25" y="30" class="card-title">⚡ DRILL TÉCNICO: INTERNALS Y TUNING DE MOTORES SQL</text>
+    <text x="25" y="30" class="card-title">⚡ PERFORMANCE LAB: INTERNALS Y TUNING DE MOTORES SQL</text>
     <text x="25" y="46" class="card-subtitle">Planes de Ejecución en 120,000+ filas • DBeaver • SQLite &amp; T-SQL</text>
 
     <!-- Sub-boxes -->
@@ -281,7 +281,7 @@
     <rect width="530" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
-    <text x="25" y="30" class="card-title">🐳 DRILL TÉCNICO: DATAOPS MULTI-CONTENEDOR (COMPOSE)</text>
+    <text x="25" y="30" class="card-title">🐳 DATAOPS INFRA: ARQUITECTURA MULTI-CONTENEDOR (COMPOSE)</text>
     <text x="25" y="46" class="card-subtitle">Arquitectura Aislada en Red Bridge • Healthchecks • Persistencia Host</text>
 
     <!-- Sub-boxes -->

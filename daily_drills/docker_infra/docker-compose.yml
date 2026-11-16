@@ -1,6 +1,6 @@
 # ==============================================================================
 # Docker Compose: Arquitectura Multi-Contenedor para Data Engineering
-# Estudiante: Kevin Stick Arciniegas Marquez
+# Lead Engineer: Kevin Stick Arciniegas Marquez
 # Componentes: PostgreSQL 16 (Base de Datos) + Python 3.12 (Pipeline ETL)
 # ==============================================================================
 

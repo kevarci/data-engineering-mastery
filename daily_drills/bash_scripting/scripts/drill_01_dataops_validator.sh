@@ -2,7 +2,7 @@
 # ==============================================================================
 # Script: drill_01_dataops_validator.sh
 # Rol: Pipeline de Ingesta Defensiva, Validación e Integridad en Bash (DataOps)
-# Estudiante: Kevin Stick Arciniegas Marquez
+# Author: Kevin Stick Arciniegas Marquez (Lead Data & Cloud Engineer)
 # Principios: Idempotencia, Strict Mode (set -euo pipefail), Logs ISO y Cuarentena
 # ==============================================================================
 

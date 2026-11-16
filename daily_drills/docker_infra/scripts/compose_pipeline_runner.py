@@ -2,8 +2,8 @@
 """
 ==============================================================================
 Script: compose_pipeline_runner.py
-Estudiante: Kevin Stick Arciniegas Marquez
-Tema: Orquestación Multi-Contenedor (Docker Compose & Redes Virtuales)
+Author: Kevin Stick Arciniegas Marquez (Lead Data & Cloud Engineer)
+Architecture: Orquestación Multi-Contenedor (Docker Compose & Redes Virtuales)
 ==============================================================================
 ¿QUÉ PROBLEMA DE ARQUITECTURA RESUELVE ESTE SCRIPT?
 En producción, un contenedor de pipeline no trabaja aislado con archivos locales;

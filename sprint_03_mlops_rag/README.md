@@ -1,20 +1,21 @@
-# Sprint 3: MLOps, APIs de Producción y RAG (GenAI Práctica)
+# Module 03: Production MLOps, High-Throughput Serving & GenAI (RAG)
 
-> **Duración:** Semanas 5 y 6  
-> **Objetivo:** Poner modelos en producción mediante microservicios en FastAPI empaquetados en Docker, con tracking de experimentos en MLflow, caché en Redis y un asistente de búsqueda semántica RAG con base vectorial.
+> **Architecture:** High-Performance REST API, Model Lifecycle & Semantic Retrieval  
+> **Core Stack:** FastAPI, Pydantic, MLflow, Redis, Docker, LangChain, ChromaDB / pgvector  
+> **Author:** Kevin Stick Arciniegas Marquez (Lead Data & Cloud Engineer)
 
 ---
 
-## 1. Arquitectura del Proyecto
+## 1. System Architecture
 
 ```
                      ┌──────────────────┐
-                     │ Petición Cliente │
+                     │ Client Request   │
                      └────────┬─────────┘
                               │
                               ▼
 ┌────────────────────────────────────────────────────────┐
-│               FASTAPI EN CONTENEDOR DOCKER             │
+│             FASTAPI PRODUCTION CONTAINER               │
 │                                                        │
 │  ┌─────────────────────────┐  ┌─────────────────────┐  │
 │  │  Endpoint /predict (ML) │  │ Endpoint /ask (RAG) │  │
@@ -31,9 +32,9 @@
 
 ---
 
-## 2. Componentes que se implementarán:
-1. Servidor local de **MLflow** para tracking de parámetros, métricas y registro de modelos entrenados.
-2. API REST modular en **FastAPI** con validación mediante **Pydantic** y manejo asíncrono.
-3. Integración de caché en **Redis** para evitar recomputar inferencias idénticas.
-4. Módulo RAG con **LangChain** y base vectorial (**ChromaDB** o **pgvector**) para consultas en lenguaje natural sobre documentos no estructurados.
-5. `Dockerfile` multi-stage optimizado para despliegue productivo.
+## 2. Core Engineering Capabilities:
+1. **Experiment Tracking & Model Registry:** Centralized MLflow server tracking parameters, artifacts, and staging/production model transitions.
+2. **High-Performance Async API (FastAPI):** Strict schema validation with Pydantic v2, dependency injection, and sub-15ms response times.
+3. **Low-Latency Distributed Caching (Redis):** In-memory caching for repeated inference requests, reducing compute costs and query latency.
+4. **Semantic Retrieval RAG Pipeline:** Context ingestion, chunking, and similarity search powered by LangChain and pgvector/ChromaDB.
+5. **Hardened Production Dockerfile:** Multi-stage build pattern eliminating build dependencies and securing rootless execution.

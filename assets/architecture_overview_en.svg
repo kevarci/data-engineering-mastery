@@ -255,7 +255,7 @@
     <rect width="530" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
-    <text x="25" y="30" class="card-title">⚡ HARD DRILL: SQL ENGINE INTERNALS &amp; TUNING</text>
+    <text x="25" y="30" class="card-title">⚡ PERFORMANCE LAB: SQL ENGINE INTERNALS &amp; TUNING</text>
     <text x="25" y="46" class="card-subtitle">Execution Plans on 120,000+ rows • DBeaver • SQLite &amp; T-SQL</text>
 
     <!-- Sub-boxes -->
@@ -281,7 +281,7 @@
     <rect width="530" height="175" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
     <rect width="530" height="4" rx="2" fill="url(#blueGrad)" />
 
-    <text x="25" y="30" class="card-title">🐳 HARD DRILL: MULTI-CONTAINER DATAOPS (COMPOSE)</text>
+    <text x="25" y="30" class="card-title">🐳 DATAOPS INFRA: MULTI-CONTAINER ARCHITECTURE (COMPOSE)</text>
     <text x="25" y="46" class="card-subtitle">Isolated Bridge Network • Healthchecks • Host Persistence</text>
 
     <!-- Sub-boxes -->

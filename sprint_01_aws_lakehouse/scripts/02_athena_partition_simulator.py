@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Simulador de Amazon Athena & Partition Pruning sobre S3/Parquet
-Sprint 01 - Fundamentos de AWS & Big Data Distribuido
-Estudiante: Kevin Stick Arciniegas Marquez
+Module 01 - Serverless Lakehouse Architecture
+Author: Kevin Stick Arciniegas Marquez (Lead Data Engineer)
 
 Objetivo:
 Demostrar el comportamiento de un motor serverless (Presto/Trino como Amazon Athena)

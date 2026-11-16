@@ -1,11 +1,12 @@
-# Sprint 2: DataOps, Orquestación con Airflow & Modern Data Stack (dbt)
+# Module 02: Enterprise DataOps, Airflow Orchestration & Modern Data Stack (dbt)
 
-> **Duración:** Semanas 3 y 4  
-> **Objetivo:** Desplegar un clúster local de Apache Airflow en Docker Compose y modelar un Data Warehouse modular con dbt Core (esquema en estrella Kimball + pruebas de datos automatizadas).
+> **Architecture:** Containerized ELT Pipeline & Kimball Dimensional Modeling  
+> **Core Stack:** Apache Airflow 2.8, dbt Core, Docker Compose, PostgreSQL / Microsoft SQL Server  
+> **Author:** Kevin Stick Arciniegas Marquez (Lead Data & Cloud Engineer)
 
 ---
 
-## 1. Arquitectura del Proyecto
+## 1. System Architecture
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -33,11 +34,11 @@
 
 ---
 
-## 2. Componentes que se implementarán:
-1. `docker-compose.yml`: Stack productivo de Airflow con volúmenes mapeados para `./dags`, `./logs` y `./plugins`.
-2. Proyecto `dbt`:
-   * Modelos `stg_` (limpieza y tipos).
-   * Modelos `int_` (transformaciones intermedias).
-   * Modelos `fct_` y `dim_` (hechos y dimensiones en estrella).
-3. Pruebas de calidad automáticas (`unique`, `not_null`, `relationships`).
-4. Generación y hosting del catálogo de linaje interactivo de dbt.
+## 2. Core Engineering Capabilities:
+1. **Containerized Orchestration (`docker-compose.yml`):** Production Airflow stack configured with volume bindings for `./dags`, `./logs`, and `./plugins`.
+2. **Modular dbt Core Project:**
+   * `stg_` models (data cleansing, contract enforcement, and explicit type casting).
+   * `int_` models (business logic, aggregations, and intermediate transformations).
+   * `fct_` and `dim_` models (Kimball dimensional star schemas optimized for analytical querying).
+3. **Automated Quality Assurances:** Comprehensive `dbt test` suites validating uniqueness, not-null constraints, and referential integrity.
+4. **Interactive Data Catalog & Lineage:** Dynamic documentation generation reflecting end-to-end data lineage.

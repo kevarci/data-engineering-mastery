@@ -1,6 +1,6 @@
 # ==============================================================================
-# Dockerfile: Pipeline de Datos Multi-Contenedor (DataOps Drill 02)
-# Estudiante: Kevin Stick Arciniegas Marquez
+# Dockerfile: Pipeline de Datos Multi-Contenedor (DataOps Enterprise)
+# Author: Kevin Stick Arciniegas Marquez (Lead Data & Cloud Engineer)
 # Base: Python 3.12 Slim (Ultraliviana, Segura y con Layer Caching)
 # ==============================================================================
 

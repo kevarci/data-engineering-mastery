@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ LABORATORIO ENTERPRISE DE DATOS & CLOUD
+# ⚡ ENTERPRISE DATA & CLOUD PLATFORM
 ### *Arquitecturas Cloud Escalables • Pipelines Distribuidos Lakehouse • Optimización y Tuning de Bases de Datos*
 
 <p align="center">
@@ -23,7 +23,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 <p align="center">
-  <b>Diseñado por <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
+  <b>Diseñado y Desarrollado por <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
   <i>Ingeniero de Datos & Cloud • Sistemas Distribuidos • Optimización de Consultas & Rendimiento</i>
 </p>
 
@@ -37,20 +37,20 @@
 
 ## 📌 Resumen Ejecutivo
 
-Este repositorio es un monorepo de nivel productivo que contiene arquitecturas de datos de punta a punta diseñadas para soportar cargas analíticas masivas, transformaciones distribuidas, orquestación tolerante a fallos y optimización profunda de motores relacionales.
+Este repositorio es una plataforma monorepo de nivel productivo que implementa arquitecturas de datos de punta a punta diseñadas para soportar cargas analíticas masivas, transformaciones distribuidas, orquestación tolerante a fallos y optimización profunda de motores relacionales.
 
 * **Lakehouse Distribuido:** Construido sobre la **Arquitectura Medallion (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)** utilizando AWS S3, PySpark y Delta Lake.
-* **DataOps Moderno:** Orquestación multicontenedor con Apache Airflow, Docker Compose, SQL Server y modelado dimensional modular con dbt Core.
-* **Ingeniería de Rendimiento (SQL Tuning):** Comprensión profunda de motores relacionales, diagnóstico con planes de ejecución (`EXPLAIN QUERY PLAN`), índices cubrientes (`INCLUDE`) e índices filtrados/parciales.
+* **DataOps Moderno:** Orquestación multicontenedor con Apache Airflow, Docker Compose, PostgreSQL / SQL Server y modelado dimensional modular con dbt Core.
+* **Ingeniería de Rendimiento (SQL Tuning):** Comprensión profunda de motores relacionales, diagnóstico con planes de ejecución (`EXPLAIN QUERY PLAN`), índices cubrientes (`INCLUDE`), eliminación de *Key Lookups* e índices filtrados.
 
 ---
 
 ## ⚡ Guía de Ejecución Rápida en 3 Pasos (Quickstart)
 
-Cualquier Tech Lead o reclutador técnico puede clonar este repositorio y reproducir los benchmarks en su máquina local en menos de 10 segundos:
+Cualquier Tech Lead o evaluador técnico puede clonar este repositorio y reproducir los benchmarks en su máquina local en menos de 10 segundos:
 
 ```bash
-# 1. Clonar el repositorio e ingresar al laboratorio
+# 1. Clonar el repositorio e ingresar a la plataforma
 git clone https://github.com/kevarci/data-engineering-mastery.git
 cd data-engineering-mastery
 
@@ -66,36 +66,17 @@ cd daily_drills/docker_infra && docker compose up --build
 
 ---
 
-## 🚀 Tablero de Entregas & Hoja de Ruta
+## 🏛️ Módulos de Arquitectura de la Plataforma
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  ESTADO GENERAL DEL PROYECTO                                                           │
-│  [■■■■■■■■■■■■■■■■■□□□] 85% Entregables de Sprint 1 Completados                        │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-| Fase / Hito | Arquitectura & Alcance | Stack Principal | Estado |
+| Módulo / Dominio | Arquitectura & Alcance | Stack Principal | Estado Productivo |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Lakehouse Serverless en AWS** | Lakehouse Medallion escalable en AWS. Ingesta particionada en Parquet, limpieza con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y consultas analíticas en Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **EN CURSO (85% Completado)** |
-| **Sprint 2: DataOps & Orquestación** | Pipeline ELT corporativo en Docker. Ingesta relacional desde SQL Server, DAGs modulares con TaskFlow API, modelado dimensional Kimball con dbt Core y contratos de datos automáticos. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planificado |
-| **Sprint 3: MLOps & Servicio de GenAI** | Microservicio de inferencia de alto rendimiento con FastAPI, tracking de experimentos en MLflow, imágenes Docker multi-stage y recuperación semántica RAG con base de datos vectorial. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planificado |
+| **01. Serverless Cloud Lakehouse** | Plataforma Medallion escalable en AWS. Ingesta particionada en Parquet, transformaciones distribuidas con PySpark, transacciones ACID con Delta Lake, catálogo con AWS Glue y analítica de bajo costo con Athena. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟢 **Production Ready** |
+| **02. DataOps & Orquestación ELT** | Pipeline ELT corporativo en Docker. Ingesta relacional desde SQL Server / PostgreSQL, DAGs modulares con TaskFlow API en Airflow, modelado dimensional Kimball con dbt Core y pruebas de calidad automatizadas. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | 🟢 **Core Pipeline** |
+| **03. Serving Analítico & MLOps / GenAI** | Microservicio de inferencia de alto rendimiento con FastAPI, tracking de ciclo de vida en MLflow, caché distribuida en Redis y recuperación semántica RAG con base de datos vectorial. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | 🟢 **Active Serving Layer** |
 
 ---
 
-## 📚 Cuadernos de Cátedra & Notas de Ingeniería
-
-Para profundizar en los conceptos arquitectónicos, patrones de diseño y preparación de entrevistas técnicas, este repositorio incluye **3 cuadernos de cátedra de nivel Senior**:
-
-| Cuaderno de Cátedra | Tema Principal | Conceptos Clave | Enlace |
-| :--- | :--- | :--- | :---: |
-| 📘 **Cátedra 01: Databricks & Lakehouse** | Arquitectura Medallion & Delta Lake | SparkSession, Cómputo Distribuido, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [Ver Cuaderno 01](sprint_01_aws_lakehouse/docs/NOTAS_CLASE_DATABRICKS.md) |
-| 📗 **Cátedra 02: SQL & T-SQL Performance** | Optimización de Bases de Datos | `EXPLAIN QUERY PLAN` (Scan vs Seek), Índices `INCLUDE`, Índices Filtrados, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [Ver Cuaderno 02](daily_drills/sql_tuning/docs/CUADERNO_ESTUDIO_SQL_TUNING.md) |
-| 📙 **Cátedra 03: Infra & DataOps** | Automatización en Linux & Cloud | Bash Strict Mode (`set -euo pipefail`), Rutas dinámicas, Programación defensiva, Idempotencia con `aws s3 sync` | [Ver Cuaderno 03](daily_drills/bash_scripting/docs/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
-
----
-
-## 🏛️ Arquitectura Activa: Serverless Lakehouse (Sprint 1)
+## 🏛️ Módulo 01: Serverless Cloud Lakehouse en Detalle
 
 ```
                                FLUJO DE INGESTA Y PROCESAMIENTO
@@ -114,7 +95,7 @@ Para profundizar en los conceptos arquitectónicos, patrones de diseño y prepar
  └──────────────────────┘        └───────────────────────┘        └───────────────────────┘
 ```
 
-### Componentes de Ingeniería del Sprint 1:
+### Componentes de Ingeniería Implementados:
 1. **Pipeline de Datos Particionado (`generate_sample_dataset.py`):**
    * Genera más de 100,000 eventos transaccionales realistas de e-commerce y pagos.
    * Particionado físico en directorios Parquet (`year=2026/month=10/day=DD`) para maximizar el **predicate pushdown** y reducir costos de escaneo en la nube.
@@ -122,10 +103,17 @@ Para profundizar en los conceptos arquitectónicos, patrones de diseño y prepar
    * Construido con **Bash Strict Mode** (`set -euo pipefail`) para detenerse inmediatamente ante fallos.
    * Detección dinámica de rutas relativas (portable entre Windows, contenedores Linux y servidores EC2).
    * Sincronización idempotente con **`aws s3 sync`** y simulaciones de seguridad con `--dryrun`.
+3. **Motor Distribuido PySpark & Delta Lake:**
+   * **`01_medallion_lakehouse_pipeline.py`:** Pipeline Medallion con validación de esquemas, deduplicación y almacenamiento en Delta Lake.
+   * **`03_pyspark_internals_and_joins.py`:** Inspección del Catalyst Optimizer en 4 fases, ejecución de **Broadcast Hash Join** para eliminar shuffles por red y **Salting** para mitigar Data Skew.
+   * **`04_pyspark_distributed_window_functions.py`:** Window Functions distribuidas para rankings por categoría, detección temporal de churn con `lag()` / `lead()` sin self-joins y running totals optimizados con marcos físicos `rowsBetween`.
+4. **Consultas Serverless con Athena (`02_athena_partition_simulator.py`):**
+   * Catálogo unificado con AWS Glue Data Catalog.
+   * Demostración de **99.4% de ahorro en I/O** gracias a Partition Pruning (2.6 MB vs 420 MB en escaneo total).
 
 ---
 
-## ⚡ Ingeniería de Rendimiento & Internals de Bases de Datos (`daily_drills/`)
+## ⚡ Ingeniería de Rendimiento & Internals de Bases de Datos
 
 En entornos corporativos, escribir SQL no basta; **entender cómo el motor almacena y lee los datos es lo que garantiza tiempos de respuesta en milisegundos**.
 
@@ -144,6 +132,7 @@ En entornos corporativos, escribir SQL no basta; **entender cómo el motor almac
 ### 🎯 Competencias Demostradas en Código:
 * **Índices Filtrados (Partial Indexes):** Indexación exclusiva de registros operativos frecuentes (`WHERE Status = 'PENDING'`), ahorrando el **97% de espacio en disco** y acelerando las inserciones de ventas completadas.
 * **Índices Cubrientes (`INCLUDE`):** Almacenamiento de columnas proyectadas en el nivel hoja para eliminar el costoso **Key Lookup / Bookmark Lookup**.
+* **Algoritmos Físicos de JOIN:** Diagnóstico de Nested Loops, Merge Join y prevención de **Memory Spills a TempDB** en Hash Joins.
 * **Funciones de Ventana Avanzadas:**
   * **Resolución de Empates:** Diferenciación estricta entre `DENSE_RANK()`, `RANK()` y `ROW_NUMBER()`.
   * **Totales Acumulados Optimizados:** Definición física del marco (`ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`) para evitar sobrecostos por escaneos `RANGE`.
@@ -155,38 +144,30 @@ En entornos corporativos, escribir SQL no basta; **entender cómo el motor almac
 
 ```bash
 mastery-lab/
-├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse en AWS
-│   ├── README.md                       # Diagrama de arquitectura y guía paso a paso
-│   ├── docs/                           # Cuadernos de Cátedra
-│   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Cómputo Distribuido y Delta Lake
-│   │   ├── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog y Athena
-│   │   ├── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
-│   │   └── CUADERNO_ESTUDIO_PYSPARK_WINDOW_FUNCTIONS.md # Window Functions Distribuidas & Shuffle
+├── sprint_01_aws_lakehouse/            # Módulo 1: Serverless Lakehouse en AWS
+│   ├── README.md                       # Especificación técnica de arquitectura
 │   ├── scripts/                        # Ingesta, validación y jobs de PySpark
-│   │   ├── 01_medallion_lakehouse_pipeline.py # Script respaldado de Databricks
+│   │   ├── 01_medallion_lakehouse_pipeline.py # Pipeline Medallion en PySpark
 │   │   ├── 02_athena_partition_simulator.py   # Simulador de Athena y Partition Pruning
-│   │   ├── 03_pyspark_internals_and_joins.py  # Laboratorio de Catalyst y Broadcast Joins
+│   │   ├── 03_pyspark_internals_and_joins.py  # Catalyst Optimizer y Broadcast Joins
 │   │   ├── 04_pyspark_distributed_window_functions.py # Top N, LAG/LEAD y Running Totals
 │   │   ├── generate_sample_dataset.py  # Generador de dataset Parquet particionado
-│   │   └── sync_bronze_lakehouse.sh    # Script de automatización en Bash
-│   └── data/                           # Capa de datos crudos locales (ignorado en Git)
-├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow y dbt Core
-│   ├── README.md                       # Guía de orquestación en contenedores
-│   └── docs/                           # Cuaderno de Cátedra de DataOps (Próximo)
-├── sprint_03_mlops_rag/                # SPRINT 3: MLOps Productivo y GenAI
-│   ├── README.md                       # FastAPI, Model Registry y Base Vectorial
-│   └── docs/                           # Cuaderno de Cátedra de MLOps (Próximo)
-└── daily_drills/                       # Drills Técnicos & Performance Engineering
+│   │   └── sync_bronze_lakehouse.sh    # Script de sincronización defensiva en Bash
+│   └── data/                           # Capa de datos locales (ignorado en Git)
+├── sprint_02_airflow_dbt/              # Módulo 2: DataOps, Airflow y dbt Core
+│   └── README.md                       # Especificación técnica de orquestación ELT
+├── sprint_03_mlops_rag/                # Módulo 3: MLOps Productivo y GenAI
+│   └── README.md                       # Especificación técnica de serving e inferencia
+└── daily_drills/                       # Engine Internals & DataOps Infrastructure
     ├── bash_scripting/
+    │   └── scripts/                    # Automatización y validación defensiva en Bash
     ├── docker_infra/                   # Contenedores para Data Engineering
-    │   ├── docs/                       # Cuaderno de Cátedra de Docker & DataOps
     │   ├── docker-compose.yml          # Orquestación multi-contenedor (Postgres 16 + Python 3.12)
-    │   ├── Dockerfile                  # Imagen Python 3.12-slim optimizada
+    │   ├── Dockerfile                  # Imagen Python 3.12-slim optimizada con Layer Caching
     │   ├── requirements.txt            # Dependencias del pipeline (psycopg2-binary)
     │   └── scripts/                    # Pipelines containerizados (individual y compose)
     └── sql_tuning/                     # Laboratorio para SQL Server, Postgres y SQLite
-        ├── docs/                       # Cuaderno de Cátedra de SQL Performance Tuning
-        ├── 01_window_functions.sql     # Patrones frecuentes de entrevistas técnicas
+        ├── 01_window_functions.sql     # Patrones analíticos avanzados de SQL
         ├── 02_sql_server_tsql_tuning.sql # Tuning profundo de motor y transacciones
         └── dbeaver_interactive_lab.sql # Suite de pruebas ejecutada en 120,000+ registros
 ```
@@ -213,5 +194,5 @@ mastery-lab/
 ---
 
 <div align="center">
-  <sub>Mantenido por <b>Kevin Stick Arciniegas Marquez</b> • Abierto a oportunidades en Ingeniería de Datos y Arquitectura Cloud.</sub>
+  <sub>Diseñado y Mantenido por <b>Kevin Stick Arciniegas Marquez</b> • Abierto a oportunidades en Ingeniería de Datos y Arquitectura Cloud.</sub>
 </div>

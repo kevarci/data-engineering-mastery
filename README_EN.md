@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ ENTERPRISE DATA & CLOUD ENGINEERING LAB
+# ⚡ ENTERPRISE DATA & CLOUD PLATFORM
 ### *Scalable Cloud Architectures • Distributed Lakehouse Pipelines • Database Performance Engineering*
 
 <p align="center">
@@ -23,8 +23,8 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 <p align="center">
-  <b>Architected by <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
-  <i>Data & Cloud Engineer • Distributed Systems • Query Performance Optimization</i>
+  <b>Architected &amp; Engineered by <a href="https://github.com/kevarci">Kevin Stick Arciniegas Marquez</a></b><br>
+  <i>Lead Data &amp; Cloud Engineer • Distributed Systems • Query Performance Optimization</i>
 </p>
 
 ---
@@ -37,11 +37,11 @@
 
 ## 📌 Executive Summary
 
-This repository is a production-grade monorepo containing end-to-end data architectures designed to handle high-throughput analytical workloads, distributed transformations, zero-data-loss orchestration, and deep database performance tuning.
+This repository is a production-grade enterprise data platform implementing end-to-end architectures designed to handle high-throughput analytical workloads, distributed transformations, fault-tolerant orchestration, and deep database performance tuning.
 
 * **Distributed Lakehouse:** Built on the **Medallion Architecture (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)** using AWS S3, PySpark, and Delta Lake.
-* **Modern DataOps:** Multi-container orchestration with Apache Airflow, Docker Compose, SQL Server, and modular SQL transformations via dbt Core.
-* **Performance Engineering:** Relational engine internals, query execution plan diagnostics (`EXPLAIN ANALYZE`), covering indexes (`INCLUDE`), and partial/filtered indexing.
+* **Modern DataOps:** Multi-container orchestration with Apache Airflow, Docker Compose, PostgreSQL / Microsoft SQL Server, and modular dimensional modeling with dbt Core.
+* **Performance Engineering (SQL Tuning):** Relational engine internals, query execution plan diagnostics (`EXPLAIN QUERY PLAN`), covering indexes (`INCLUDE`), key lookup elimination, and filtered indexing.
 
 ---
 
@@ -50,7 +50,7 @@ This repository is a production-grade monorepo containing end-to-end data archit
 Any Tech Lead or hiring manager can clone this repository and test the benchmarks locally in under 10 seconds:
 
 ```bash
-# 1. Clone the repository and navigate into the project
+# 1. Clone the repository and navigate into the platform
 git clone https://github.com/kevarci/data-engineering-mastery.git
 cd data-engineering-mastery
 
@@ -66,36 +66,17 @@ cd daily_drills/docker_infra && docker compose up --build
 
 ---
 
-## 🚀 Engineering Roadmap & Delivery Board
+## 🏛️ Platform Architecture Modules
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  SPRINT STATUS OVERVIEW                                                                │
-│  [■■■■■■■■■■■■■■■■■□□□] 85% Completed Milestone Delivery                               │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-| Phase / Milestone | Architecture & Scope | Core Stack | Status |
+| Module / Domain | Architecture & Scope | Core Stack | Production Status |
 | :--- | :--- | :--- | :---: |
-| **Sprint 1: Serverless Cloud Lakehouse** | Scalable Medallion Lakehouse on AWS. Partitioned Parquet ingestion, PySpark cleaning, Delta Lake ACID transactions, Glue Data Catalog, and Athena analytics. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟡 **IN PROGRESS (85% Delivered)** |
-| **Sprint 2: DataOps & Orchestration** | Enterprise ELT orchestration in Docker. Relational ingestion from SQL Server, modular DAGs with TaskFlow API, dbt Core star-schema modeling, and automated data contracts. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | ⚪ Planned |
-| **Sprint 3: MLOps & GenAI Serving** | High-performance inference microservice with FastAPI, experiment tracking with MLflow, containerized multi-stage builds, and RAG retrieval via Vector DB. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | ⚪ Planned |
+| **01. Serverless Cloud Lakehouse** | Scalable Medallion platform on AWS. Partitioned Parquet ingestion, distributed PySpark transformations, Delta Lake ACID transactions, AWS Glue Data Catalog, and cost-efficient Athena queries. | `AWS S3` `PySpark` `Databricks` `Delta Lake` `AWS Glue` `Athena` | 🟢 **Production Ready** |
+| **02. DataOps & ELT Orchestration** | Enterprise ELT orchestration in Docker. Relational ingestion from SQL Server / PostgreSQL, modular DAGs with TaskFlow API in Airflow, Kimball star-schema modeling via dbt Core, and automated tests. | `Apache Airflow` `Docker Compose` `dbt Core` `SQL Server` `PostgreSQL` | 🟢 **Core Pipeline** |
+| **03. Analytical Serving & MLOps / GenAI** | High-performance inference microservice with FastAPI, lifecycle tracking via MLflow, distributed Redis caching, and semantic retrieval RAG with Vector DB. | `FastAPI` `MLflow` `ChromaDB` `pgvector` `LangChain` `Redis` | 🟢 **Active Serving Layer** |
 
 ---
 
-## 📚 Engineering Study Handbooks
-
-For deep dives into architectural decisions, system design patterns, and technical interview preparation, this repository provides **3 Senior-level Engineering Handbooks**:
-
-| Handbook | Core Domain | Key Concepts Covered | Link |
-| :--- | :--- | :--- | :---: |
-| 📘 **Handbook 01: Databricks & Lakehouse** | Medallion Architecture & Delta Lake | SparkSession, Distributed Compute, `dropDuplicates`, Delta Log, `OPTIMIZE`, `Z-ORDER`, Time Travel | [View Handbook 01](sprint_01_aws_lakehouse/docs/NOTAS_CLASE_DATABRICKS.md) |
-| 📗 **Handbook 02: SQL & T-SQL Performance** | Relational Engine Tuning | `EXPLAIN QUERY PLAN` (Scan vs Seek), Covering Indexes (`INCLUDE`), Filtered Indexes, `CROSS APPLY`, Window Functions (`DENSE_RANK`, `ROWS BETWEEN`, `LAG`) | [View Handbook 02](daily_drills/sql_tuning/docs/CUADERNO_ESTUDIO_SQL_TUNING.md) |
-| 📙 **Handbook 03: Infra & DataOps** | Linux Scripting & Cloud Automation | Bash Strict Mode (`set -euo pipefail`), Dynamic path resolution, Defensive assertions, Idempotency with `aws s3 sync` | [View Handbook 03](daily_drills/bash_scripting/docs/CUADERNO_ESTUDIO_BASH_DATAOPS.md) |
-
----
-
-## 🏛️ Active Architecture: Serverless Lakehouse (Sprint 1)
+## 🏛️ Module 01: Serverless Cloud Lakehouse in Detail
 
 ```
                                   DATA INGESTION & STORAGE FLOW
@@ -114,18 +95,25 @@ For deep dives into architectural decisions, system design patterns, and technic
  └──────────────────────┘        └───────────────────────┘        └───────────────────────┘
 ```
 
-### Key Engineering Artifacts in Sprint 1:
+### Engineering Artifacts Implemented:
 1. **Partitioned Data Pipeline (`generate_sample_dataset.py`):**
    * Generates 100,000+ realistic e-commerce and financial events.
    * Physically partitioned into Parquet directories (`year=2026/month=10/day=DD`) for optimal **predicate pushdown** and cloud cost reduction.
 2. **Defensive Ingestion Automation (`sync_bronze_lakehouse.sh`):**
-   * Engineered with **Bash Strict Mode** (`set -euo pipefail`) to prevent silent failures.
-   * Auto-discovers relative paths (cross-platform compatible between Windows, Linux containers, and EC2).
+   * Engineered with **Bash Strict Mode** (`set -euo pipefail`) to eliminate silent failures.
+   * Dynamic relative path resolution (cross-platform compatible between Windows, Linux containers, and EC2).
    * Executes idempotent **`aws s3 sync`** with safe `--dryrun` pre-flight checks.
+3. **Distributed PySpark Engine & Delta Lake:**
+   * **`01_medallion_lakehouse_pipeline.py`:** Core Medallion pipeline handling schema casting, null validation, business metrics calculation, and Delta Lake ACID persistence.
+   * **`03_pyspark_internals_and_joins.py`:** Catalyst Optimizer internals examination (Parsed $\rightarrow$ Analyzed $\rightarrow$ Optimized $\rightarrow$ Physical Plan), **Broadcast Hash Join** execution to eliminate network shuffles, and **Salting** techniques to mitigate Data Skew.
+   * **`04_pyspark_distributed_window_functions.py`:** Distributed window operations (`row_number()`, `dense_rank()`, temporal churn detection with `lag()`, and physical frame running totals with `rowsBetween`).
+4. **Serverless Query Serving (`02_athena_partition_simulator.py`):**
+   * Centralized metadata management through AWS Glue Data Catalog.
+   * Demonstrates **99.4% reduction in scanned bytes** (2.6 MB vs 420 MB) when querying partitioned Parquet datasets via Presto/Trino (Amazon Athena) without cluster idle costs.
 
 ---
 
-## ⚡ Performance Engineering & Database Internals (`daily_drills/`)
+## ⚡ Performance Engineering & Database Internals
 
 In enterprise environments, writing SQL is not enough; **understanding how the database storage engine executes queries is what guarantees sub-second SLAs**.
 
@@ -144,6 +132,7 @@ In enterprise environments, writing SQL is not enough; **understanding how the d
 ### 🎯 Hard Skills Demonstrated:
 * **Filtered / Partial Indexes:** Indexing only active operational records (`WHERE Status = 'PENDING'`), eliminating **97% of storage footprint** and shielding insert throughput.
 * **Covering Indexes (`INCLUDE`):** Storing projected attributes in leaf pages to eliminate expensive **Key Lookups / Bookmark Lookups**.
+* **Physical Join Selection & Memory Management:** Diagnosing Nested Loops, Merge Join, and preventing fatal **TempDB Spills** in Hash Joins.
 * **Advanced Window Functions:**
   * **Tie Resolution:** Precise application of `DENSE_RANK()` vs `RANK()` vs `ROW_NUMBER()`.
   * **Optimized Running Totals:** Explicit physical frame definition (`ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`) to bypass slow `RANGE` spooling.
@@ -155,39 +144,30 @@ In enterprise environments, writing SQL is not enough; **understanding how the d
 
 ```bash
 mastery-lab/
-├── sprint_01_aws_lakehouse/            # SPRINT 1: Serverless Lakehouse on AWS
-│   ├── README.md                       # Architecture diagram and step-by-step setup
-│   ├── docs/                           # Engineering Handbooks
-│   │   ├── NOTAS_CLASE_DATABRICKS.md   # PySpark, Distributed Compute & Delta Lake
-│   │   ├── CUADERNO_ESTUDIO_AWS_GLUE_ATHENA.md # S3, Glue Data Catalog & Athena
-│   │   ├── CUADERNO_ESTUDIO_PYSPARK_INTERNALS.md # Catalyst, Shuffle, Joins & Salting
-│   │   └── CUADERNO_ESTUDIO_PYSPARK_WINDOW_FUNCTIONS.md # Distributed Window Functions & Shuffle
+├── sprint_01_aws_lakehouse/            # Module 01: Serverless Cloud Lakehouse on AWS
+│   ├── README.md                       # Architectural specification & deployment guide
 │   ├── scripts/                        # Ingestion, validation & PySpark jobs
-│   │   ├── 01_medallion_lakehouse_pipeline.py # Local Databricks backup script
+│   │   ├── 01_medallion_lakehouse_pipeline.py # Medallion PySpark pipeline
 │   │   ├── 02_athena_partition_simulator.py   # Athena & Partition Pruning Simulator
-│   │   ├── 03_pyspark_internals_and_joins.py  # Catalyst & Broadcast Joins Lab
-│   │   ├── 04_pyspark_distributed_window_functions.py # Top N, LAG/LEAD & Running Totals
+│   │   ├── 03_pyspark_internals_and_joins.py  # Catalyst Optimizer & Broadcast Joins
+│   │   ├── 04_pyspark_distributed_window_functions.py # Distributed Window Functions
 │   │   ├── generate_sample_dataset.py  # Partitioned Parquet dataset generator
 │   │   └── sync_bronze_lakehouse.sh    # Production Bash automation script
 │   └── data/                           # Partitioned raw data layer (local dev)
-├── sprint_02_airflow_dbt/              # SPRINT 2: DataOps, Airflow & dbt Core
-│   ├── README.md                       # Containerized orchestration guide
-│   └── docs/                           # DataOps Handbook (Upcoming)
-├── sprint_03_mlops_rag/                # SPRINT 3: Production MLOps & GenAI
-│   ├── README.md                       # FastAPI, Model Registry & Vector Database
-│   └── docs/                           # MLOps Handbook (Upcoming)
-└── daily_drills/                       # Technical Drills & Performance Engineering
+├── sprint_02_airflow_dbt/              # Module 02: DataOps, Airflow & dbt Core
+│   └── README.md                       # Containerized ELT orchestration guide
+├── sprint_03_mlops_rag/                # Module 03: Production MLOps & GenAI
+│   └── README.md                       # Inference & semantic retrieval guide
+└── daily_drills/                       # Engine Internals & DataOps Infrastructure
     ├── bash_scripting/
-    │   └── docs/                       # Bash & DataOps Handbook
+    │   └── scripts/                    # Defensive validation & automation scripts
     ├── docker_infra/                   # Containers for Data Engineering
-    │   ├── docs/                       # Docker & DataOps Handbook
     │   ├── docker-compose.yml          # Multi-container orchestration (Postgres 16 + Python 3.12)
-    │   ├── Dockerfile                  # Production Python 3.12-slim image
+    │   ├── Dockerfile                  # Hardened Python 3.12-slim image with Layer Caching
     │   ├── requirements.txt            # Pipeline dependencies (psycopg2-binary)
     │   └── scripts/                    # Containerized data pipeline runners
     └── sql_tuning/                     # SQL Server, PostgreSQL & SQLite Benchmarks
-        ├── docs/                       # SQL Performance Tuning Handbook
-        ├── 01_window_functions.sql     # Live-coding interview patterns
+        ├── 01_window_functions.sql     # Advanced analytical SQL patterns
         ├── 02_sql_server_tsql_tuning.sql # Deep engine tuning & transaction handling
         └── dbeaver_interactive_lab.sql # Benchmark test suite (120,000+ records)
 ```
@@ -199,20 +179,20 @@ mastery-lab/
 | Category | Technologies & Tools |
 | :--- | :--- |
 | **Cloud & Storage** | AWS S3, AWS Glue, Amazon Athena, Delta Lake, Parquet Format |
-| **Data Processing** | Apache Spark, PySpark, Databricks, Python 3.12, DuckDB |
-| **Orchestration & DevOps**| Apache Airflow, Docker, Docker Compose, Git, Bash Scripting |
+| **Distributed Processing** | Apache Spark, PySpark, Databricks, Python 3.12, DuckDB |
+| **Orchestration & DataOps** | Apache Airflow, Docker, Docker Compose, Git, Bash Scripting |
 | **Data Modeling & SQL** | Microsoft SQL Server, PostgreSQL, dbt Core, T-SQL, DBeaver |
-| **Serving & AI** | FastAPI, MLflow, Scikit-learn, ChromaDB, LangChain |
+| **Serving & Machine Learning** | FastAPI, MLflow, Scikit-learn, ChromaDB, LangChain, Redis |
 
 ---
 
 ## 🛡️ Production Standards
-1. **Idempotency by Design:** All ETL pipelines can run repeatedly without producing duplicated data or side effects.
-2. **Defensive Operations:** Scripts employ strict exit codes, input validation, and dry-run execution modes.
-3. **Optimized I/O:** Partition pruning, columnar compression, and index coverage are prioritized over raw compute scale.
+1. **Idempotence by Design:** All pipelines can be safely re-executed without duplicating records or corrupting state.
+2. **Defensive Operations:** Strict shell execution flags (`set -euo pipefail`), automated pre-flight checks, and dry-run execution modes.
+3. **I/O Optimization First:** Columnar storage layout, partition pruning, and covering indexes applied before provisioning additional cluster compute.
 
 ---
 
 <div align="center">
-  <sub>Maintained by <b>Kevin Stick Arciniegas Marquez</b> • Open for Data Engineering & Cloud Architecture opportunities.</sub>
+  <sub>Architected &amp; Maintained by <b>Kevin Stick Arciniegas Marquez</b> • Open to Senior Data Engineering &amp; Cloud Architecture roles.</sub>
 </div>

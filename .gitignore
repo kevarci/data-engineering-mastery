@@ -25,7 +25,13 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Internal Coaching, Study Schedules & Gap Analysis (Private)
+# Internal Coaching, Study Schedules & Interview Prep (Local Only)
 ANALISIS_BRECHAS.md
 PLAN_ESTUDIO.md
 .coaching/
+GUIA_ENTREVISTA_*.md
+
+# Study Notebooks & Class Notes (Local Only)
+**/docs/CUADERNO_*.md
+**/docs/NOTAS_*.md
+**/docs/

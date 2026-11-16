@@ -54,7 +54,7 @@ raw_data = [
     (1009, "CUST_01", "Books",       45.00,   "2026-10-02", "2026-10-02 08:30:00"),
     (1010, "CUST_03", "Books",       120.00,  "2026-10-07", "2026-10-07 15:00:00"),
     (1011, "CUST_05", "Books",       85.00,   "2026-10-09", "2026-10-09 11:45:00"),
-    # Registros duplicados para el ejercicio de deduplicación:
+    # Registros duplicados para el escenario de deduplicación:
     (1001, "CUST_01", "Electronics", 1250.00, "2026-10-01", "2026-10-01 10:15:00")  # Versión corregida más reciente
 ]
 

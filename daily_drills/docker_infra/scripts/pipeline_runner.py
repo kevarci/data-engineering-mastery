@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Pipeline Runner en Contenedor Docker (DataOps Drill)
-Estudiante: Kevin Stick Arciniegas Marquez
+Pipeline Runner en Contenedor Docker (DataOps Architecture)
+Author: Kevin Stick Arciniegas Marquez (Lead Data Engineer)
 
 Objetivo:
 Demostrar el aislamiento de ejecución dentro de Linux y la persistencia
